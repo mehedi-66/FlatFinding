@@ -1,6 +1,97 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Flat Finding";
 }
 
-<h1>Hi I am from Home</h1>
+<div class="">
+    <div class="d-flex container HeaderBanar">
+        <div class="HomeHeaderLef">
+            @*TODO:
+                1) Advance Search: (Area, price, room, type(family, bacelor, sublate) )
+                2) Recomend by your profile or behavior, Area ML
+            *@
+            <div class="card">
+              <div class="card-body">
+                  <h4>Find the Right Flat</h4>
+                  <br/>
+                  <h5>Search </h5>
+                  <br/>
+                    <form  class="p-2">
+                            
+                        @*<div class="text-center">
+                            <input type="radio" /> <b style="margin-right: 30px">AI Recomanded Search</b>
+                            <input type="radio" /> <b>General Search</b>
+                        </div>*@
+
+                        <div class="row  mt-3">
+                            <div class="col-6 mb-3">
+                                       <label>Select Area</label>
+                                <select class="form-control">
+                                           <option>All</option>
+                                           <option>Mirpur</option>
+                                           <option>Bonani</option>
+                                           <option>Uttara</option>
+                                       </select>
+                                   </div>
+
+                            <div class="col-6 mb-3">
+                                       <label>Price Range</label>
+                                        <input type="number" class="form-control" />
+                                   </div>
+
+                            <div class="col-6 mb-3">
+                                       <label>Number of Rooms</label>
+                                <select class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                </select>
+                                   </div>
+                            <div class="col-6 mb-3">
+                                       <label>Type of Flat</label>
+                                <select class="form-control">
+                                    <option>Family</option>
+                                    <option>Bachelor</option>
+                                    <option>Sublate</option>
+                                   
+                                </select>
+                                   </div>
+                              
+
+                              
+                </div>
+                        <a class="btn btn-success mt-3 mb-3" asp-controller="" asp-action="">Search Now</a>
+                    </form>
+              </div>
+            </div>
+        </div>
+        <div class="HomeHeaderRight">
+            <div class="card">
+                <div class="card-header">See Area wise</div>
+                <div class="card-body d-flex flex-wrap">
+                 
+
+                        <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Uttara (5)</a>
+                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Airport (7)</a>
+                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Mirpur (15)</a>
+                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Motijil (9)</a>
+                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Basundhara (11)</a>
+                  
+                </div>
+                <div class="p-2">
+                    <hr />
+                    <p>Quick Update</p>
+                    New Flat (24h) <br/>
+                    Last 7 days
+                </div>
+                
+                <div class="card-footer">
+                    <small>Best Flat with Best Match</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

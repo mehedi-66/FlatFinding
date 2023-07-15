@@ -16,3 +16,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.HomeHeaderLef {
+    width: 70%;
+   /* border: 1px solid red;*/
+}
+.HomeHeaderRight {
+    width: 30%;
+    /*border: 1px solid green;*/
+}
+.HeaderBanar{
+    height: 300px
+}
+.SearchForm {
+    width: 80%;
+   /* border: 1px solid red;*/
+}
+.SearchOptions {
+    width: 20%;
+   /* border: 1px solid green;*/
+}
