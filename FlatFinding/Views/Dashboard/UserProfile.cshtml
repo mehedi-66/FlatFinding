@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "User Dashboard";
+
+}
+<div class="RecomendedArea mt-5 mb-3">
+    <h4>User Profile Details</h4>
+
+    <div class="card userProfile mb-3 mt-3">
+
+        <div class="card-body">
+
+           <div class="row">
+               <div class="col-12 d-flex justify-content-end">
+                   <img class="mx-4" src="~/img/person.png"  style="width: 100px; height: 100px"/>
+               </div>
+               <div class="col-6 mb-3 mt-3">
+                   <b>Name:</b>
+                   <span class="mx-2">Mehedi Hasan</span>
+               </div>
+                
+                <div class="col-6  mb-3 mt-3">
+                    <b>Father Name:</b>
+                    <span class="mx-2">Abul Kalam Azad</span>
+                </div> 
+                <div class="col-6  mb-3">
+                    <b>Mother Name:</b>
+                    <span class="mx-2">Moslema</span>
+                </div>
+                <div class="col-6  mb-3">
+                    <b>Address:</b>
+                    <span class="mx-2">Dhaka, Bangladesh</span>
+                </div> 
+                <div class="col-6  mb-3">
+                    <b>Phone:</b>
+                    <span class="mx-2">01704725466</span>
+                </div>
+                <div class="col-6  mb-3">
+                    <b>Email:</b>
+                    <span class="mx-2">mehedisn3@gmail.com</span>
+                </div>
+           </div>
+           <div class="d-flex justify-content-end">
+               <a class="btn btn-primary mx-4" asp-controller="" asp-action="" >Edit</a>
+           </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="RecomendedArea mt-5 mb-3">
+    <h4>Booked Flat by You</h4>
+
+    <div class="card userBookedList mb-3 mt-3">
+
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <th>Picture</th>
+                    <th>Address</th>
+                    <th>Cost</th>
+                    <th>Rooms</th>
+                    <th>Status</th>
+                    <th>Booking Date</th>
+                    <th>Action</th>
+                </tr>
+           @for(int i = 0; i <=5; i++)
+           {
+              
+               <tr>
+                   <td>
+                       <img src="/img/flat.jpg" style="width: 50px; height: 45px" />
+                   </td>
+                   <td>H: 50, R: 10, Sc: 10, Uttara </td>
+                   <td>20000 tk/month</td>
+                   <td>4</td>
+                   <td>Paid</td>
+                   <td>02/07/2023</td>
+                        <td>
+                            <abbr title="Applicable within 24 hours">
+                        <a class="btn btn-primary" asp-controller="" asp-action=""> Cancel</a>
+                            </abbr>
+                    </td>
+               </tr>
+               
+           }
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+

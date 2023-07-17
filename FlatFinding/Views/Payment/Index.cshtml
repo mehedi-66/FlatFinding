@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Payment";
+
+}
+
+<div class="RecomendedArea mt-5 mb-3">
+    <h4>Choose your Payment Method</h4>
+
+    <div class="card paymentGetWay mb-3 mt-3">
+
+        <div class="card-body d-flex flex-wrap justify-content-center">
+               @for (int i = 0; i <= 6; i++)
+               {
+                   <a asp-controller="Payment" asp-action="PaymentGetWay">
+                       <img class="paymentImg mb-2 mx-2"  src="/img/bkash.png" alt="Card image cap">
+                   </a>
+               }
+           
+        </div>
+
+
+    </div>
+
+</div>
