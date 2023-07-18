@@ -7,6 +7,16 @@ namespace FlatFinding.Controllers
         public IActionResult UserProfile()
         {
             return View();
+        } 
+        
+        public IActionResult FlatOwnerProfile()
+        {
+            return View();
+        } 
+        
+        public IActionResult AdminDashboard()
+        {
+            return View();
         }
     }
 }

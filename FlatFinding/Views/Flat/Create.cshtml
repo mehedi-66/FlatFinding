@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create Flat";
+
+}
+
+<div class="RecomendedArea mt-5 mb-3">
+   
+
+    <div class="card userBookedList mb-3 mt-3">
+
+        <div class="card-body">
+            <h5>Flat Info</h5>
+
+            <form class="p-2">
+
+                <div class="row  mt-3">
+                    <div class="col-6 mb-3">
+                        <label>Flat Name</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>House No</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                     <div class="col-6 mb-3">
+                        <label>Road No</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                     <div class="col-6 mb-3">
+                        <label>Sector No</label>
+                        <input type="text" class="form-control" />
+                    </div> 
+                    <div class="col-6 mb-3">
+                        <label>Area Name</label>
+                        <input type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-6 mb-3">
+                        <label>Total Cost per month</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Rooms</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Available</label>
+                        <select class="form-control">
+                            <option>YES</option>
+                            <option>NO</option>
+                        </select>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Types</label>
+                        <select class="form-control">
+                            <option>Family</option>
+                            <option>Bacelor</option>
+                            <option>Sublate</option>
+                        </select>
+                    </div>
+                     <div class="col-6 mb-3">
+                        <label>Upload Picture</label>
+                        <input type="file" class="form-control" />
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Flat Description</label>
+                        <textarea type="text" class="form-control" rows="4" ></textarea>
+                    </div>
+
+                    
+                   
+                </div>
+                <a class="btn btn-success mt-3 mb-3" asp-controller="Flat" asp-action="Update">Save</a>
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
