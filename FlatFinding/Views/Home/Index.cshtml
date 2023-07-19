@@ -3,6 +3,46 @@
     ViewData["Title"] = "Flat Finding";
 }
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+                <div class="card-block">
+                    <h5 class="mb-2 text-center">Active User</h5>
+                    <h5 class="text-center">12030</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-green order-card">
+                <div class="card-block">
+                    <h5 class="mb-2 text-center">Active Flat Owner</h5>
+                    <h5 class="text-center">450</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-yellow order-card">
+                <div class="card-block">
+                    <h5 class="mb-2 text-center">Available Flat</h5>
+                    <h5 class="text-center">525</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-pink order-card">
+                <div class="card-block">
+                    <h5 class="mb-2 text-center">Completed Booking</h5>
+                    <h5 class="text-center">740</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="">
     <div class="d-flex container HeaderBanar">
         <div class="HomeHeaderLef">
@@ -11,7 +51,7 @@
             2) Recomend by your profile or behavior, Area ML
             3) Notice for your and Comment section 
             *@
-            <div class="card">
+            <div class="card SearchGrdint">
                 <div class="card-body">
                     <h5 style="text-align: center;">Find the Right Flat</h5>
 
@@ -26,7 +66,7 @@
 
                         <div class="row  mt-3">
                             <div class="col-6 mb-3">
-                                <label>Select Area</label>
+                                <label class="mb-1"><b> Select Area</b></label>
                                 <select class="form-control">
                                     <option>All</option>
                                     <option>Mirpur</option>
@@ -36,12 +76,12 @@
                             </div>
 
                             <div class="col-6 mb-3">
-                                <label>Price Range</label>
+                                <label class="mb-1"> <b>Price Range</b></label>
                                 <input type="number" class="form-control" />
                             </div>
 
                             <div class="col-6 mb-3">
-                                <label>Number of Rooms</label>
+                                <label class="mb-1"> <b>Number of Rooms </b></label>
                                 <select class="form-control">
                                     <option>1</option>
                                     <option>2</option>
@@ -52,7 +92,7 @@
                                 </select>
                             </div>
                             <div class="col-6 mb-3">
-                                <label>Type of Flat</label>
+                                <label class="mb-1"><b>Type of Flat </b></label>
                                 <select class="form-control">
                                     <option>Family</option>
                                     <option>Bachelor</option>
@@ -70,7 +110,7 @@
             </div>
         </div>
         <div class="HomeHeaderRight">
-            <div class="card">
+            <div class="card SideBarGrdint2">
                 <div class="card-header text-center">See Area wise</div>
                 <div class="card-body d-flex flex-wrap">
 
@@ -83,7 +123,6 @@
 
                 </div>
                @* <div class="p-2">
-                  
                     <p>Quick Update</p>
                     New Flat (24h) <br />
                     Last 7 days
