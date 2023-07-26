@@ -10,12 +10,14 @@ namespace FlatFinding.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, 
+        public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, 
                                     SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
         
@@ -23,12 +25,20 @@ namespace FlatFinding.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            var roles = roleManager.Roles;
+            ViewBag.Roles = roles;
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            var role = await roleManager.FindByIdAsync(model.RoleId);
+            if(role == null)
+            {
+                return View(model);
+            }
+
             if(ModelState.IsValid)
             {
                 var user = new ApplicationUser() { Email = model.Email, UserName = model.Email,
@@ -38,6 +48,10 @@ namespace FlatFinding.Controllers
 
                 if(result.Succeeded)
                 {
+                    user = await userManager.FindByIdAsync(user.Id);
+                    
+                    await userManager.AddToRoleAsync(user, role.Name);
+
                    await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }

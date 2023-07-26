@@ -29,5 +29,9 @@ namespace FlatFinding.ViewModel
         [Compare("Password", ErrorMessage = "Password and Confirm Password do not match")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
+        [Display(Name = "Role")]
+        public string RoleId { get; set; }
+
     }
 }
