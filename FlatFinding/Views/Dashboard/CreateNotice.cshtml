@@ -1,0 +1,42 @@
+﻿@model FlatFinding.Models.Notice
+
+<div class="RecomendedArea mt-5 mb-3">
+
+
+    <div class="card userBookedList mb-3 mt-3">
+
+        <div class="card-body">
+            <h5>Publish Notice</h5>
+
+            <form asp-controller="Dashboard" asp-action="UpdateNotice" class="p-2" method="post">
+
+                <div class="row  mt-3">
+                    <div class="col-6 mb-3">
+                        <label asp-for="NoticeName">Notice Name</label>
+                        <input asp-for="NoticeName" type="text" class="form-control" />
+                        <span asp-validation-for="NoticeName" class="text-danger"></span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label asp-for="PublishDate">Notice Date</label>
+                        <input asp-for="PublishDate" type="date" class="form-control" />
+                        <span asp-validation-for="PublishDate" class="text-danger"></span>
+                    </div>
+                  
+                    <div class="col-6 mb-3">
+                        <label asp-for="Description">Notice Description</label>
+                        <textarea asp-for="Description" type="text" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+
+
+                </div>
+                <button type="submit" class="btn btn-success mt-3 mb-3">Publish</button>
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>

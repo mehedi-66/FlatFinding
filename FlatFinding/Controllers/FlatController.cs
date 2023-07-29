@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FlatFinding.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlatFinding.Controllers
@@ -14,15 +15,17 @@ namespace FlatFinding.Controllers
         public IActionResult FlatDetails()
         {
             return View();
-        }  
+        }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
         
-        public IActionResult Update()
+        [HttpPost]
+        public IActionResult Update(Flat model)
         {
-            return View();
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FlatFinding.Models.Flat
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Create Flat";
 
@@ -12,66 +13,89 @@
         <div class="card-body">
             <h5>Flat Info</h5>
 
-            <form class="p-2">
+            <form asp-controller="Flat" asp-action="Update" class="p-2" method="post">
 
                 <div class="row  mt-3">
                     <div class="col-6 mb-3">
-                        <label>Flat Name</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for="Name">Flat Name</label>
+                        <input asp-for="Name" type="text" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">
-                        <label>House No</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for="HouseNo">House No</label>
+                        <input asp-for="HouseNo" type="number" class="form-control" />
+                        <span asp-validation-for="HouseNo" class="text-danger"></span>
                     </div>
                      <div class="col-6 mb-3">
-                        <label>Road No</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for="RoadNo">Road No</label>
+                        <input asp-for="RoadNo" type="number" class="form-control" />
+                        <span asp-validation-for="RoadNo" class="text-danger"></span>
                     </div>
                      <div class="col-6 mb-3">
-                        <label>Sector No</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for="sectorNo">Sector No</label>
+                        <input asp-for="sectorNo" type="number" class="form-control" />
+                        <span asp-validation-for="sectorNo" class="text-danger"></span>
                     </div> 
                     <div class="col-6 mb-3">
-                        <label>Area Name</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for="AreaName">Area Name</label>
+                        <select asp-for="AreaName" class="form-control">
+                            <option value="Airport">Airport</option>
+                            <option value="Uttara"> Uttara</option>
+                            <option value="Mirpur"> Mirpur</option>
+                            <option value="Bonani"> Bonani</option>
+                            <option value="Gulsan"> Gulsan</option>
+                            <option value="Dhanmondi"> Dhanmondi</option>
+                            <option value="Motijil"> Motijil</option>
+                        </select>
+                        <span asp-validation-for="AreaName" class="text-danger"></span>
                     </div>
 
                     <div class="col-6 mb-3">
-                        <label>Total Cost per month</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for ="TotalCost"> Total Cost per month</label>
+                        <input asp-for="TotalCost" type="text" class="form-control" />
+                        <span asp-validation-for="TotalCost" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">
-                        <label>Rooms</label>
-                        <input type="text" class="form-control" />
+                        <label asp-for="RoomNo">Rooms</label>
+                        <input asp-for="RoomNo" type="text" class="form-control" />
+                        <span asp-validation-for="RoomNo" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">
-                        <label>Available</label>
-                        <select class="form-control">
-                            <option>YES</option>
-                            <option>NO</option>
+                        <label asp-for="Available">Available</label>
+                        <select asp-for="Available" class="form-control">
+                            <option value="YES">YES</option>
+                            <option value="NO">NO</option>
                         </select>
+                        <span asp-validation-for="Available" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">
-                        <label>Types</label>
-                        <select class="form-control">
-                            <option>Family</option>
-                            <option>Bacelor</option>
-                            <option>Sublate</option>
+                        <label asp-for="Types">Types</label>
+                        <select asp-for="Types" class="form-control">
+                            <option value="Family">Family</option>
+                            <option value="Bacelor">Bacelor</option>
+                            <option value="Sublate">Sublate</option>
                         </select>
+                        <span asp-validation-for="Types" class="text-danger"></span>
                     </div>
                      <div class="col-6 mb-3">
                         <label>Upload Picture</label>
                         <input type="file" class="form-control" />
+                    </div> 
+                    <div class="col-6 mb-3">
+                        <label asp-for="Phone">Phone Number</label>
+                        <input asp-for="Phone" type="text" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">
-                        <label>Flat Description</label>
-                        <textarea type="text" class="form-control" rows="4" ></textarea>
+                        <label asp-for="Description">Flat Description</label>
+                        <textarea asp-for="Description" type="text" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     
                    
                 </div>
-                <a class="btn btn-success mt-3 mb-3" asp-controller="Flat" asp-action="Update">Save</a>
+                <button type="submit" class="btn btn-success mt-3 mb-3" >Save</button>
             </form>
 
         </div>

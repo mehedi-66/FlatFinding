@@ -1,0 +1,40 @@
+﻿<div class="container">
+   <div class="card">
+       <div class="card-header">
+           <div class="d-flex justify-content-around">
+                <h5>Admin Notice Panel</h5>
+                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="CreateNotice">Create Notice</a>
+           </div>
+           <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Publish Date</th>
+                        <th>Action</th>
+                    </tr>
+                    @for (int i = 0; i <= 5; i++)
+                    {
+
+                        <tr>
+                           
+                            <td>Good News </td>
+                            <td>Good News </td>
+                           
+                            <td>02/07/2023</td>
+                            <td>
+                              
+                                    <a class="btn btn-primary" asp-controller="" asp-action=""> Update</a>
+                                    <a class="btn btn-danger" asp-controller="" asp-action="">Delete</a>
+                              
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+           </div>
+          
+       </div>
+   </div>
+</div>

@@ -1,0 +1,39 @@
+﻿<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-around">
+                <h5>Admin Flat Owner List Panel</h5>
+                <h5>Number Of Owner: 500</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                    @for (int i = 0; i <= 5; i++)
+                    {
+
+                        <tr>
+                            <td>ABC</td>
+                            <td>H:50,R:30 Uttara </td>
+
+                            <td>01705474847</td>
+                            <td>
+
+                                <a class="btn btn-primary" asp-controller="" asp-action=""> Update</a>
+                                <a class="btn btn-danger" asp-controller="" asp-action="">Delete</a>
+
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
