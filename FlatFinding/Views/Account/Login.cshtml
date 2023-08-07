@@ -21,6 +21,16 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="RoleId"></label>
+                <select asp-for="RoleId" class="form-control">
+                    @foreach (var role in ViewBag.Roles)
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
             <div class="form-group mt-2">
                 <div class="checkbox">
                     <label asp-for="RememberMe">

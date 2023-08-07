@@ -9,7 +9,7 @@
 <div class="card row w-50 p-3 m-auto">
     <h4>Account</h4>
     <div class="col-md-12">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="All" class="text-danger"></div>
            
             <div class="row">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group col-6 mb-2">
                     <label asp-for="Picture"></label>
-                    <input type="file" asp-for="Picture" class="form-control" />
+                    <input type="file" name="file" class="form-control" />
                     <span asp-validation-for="Picture" class="text-danger"></span>
                 </div>
             </div>

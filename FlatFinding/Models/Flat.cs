@@ -23,7 +23,7 @@ namespace FlatFinding.Models
         public string Available { get; set; }
         [Required]
         public string Types  { get; set; }
-        public string Picture { get; set; }
+        public string? Picture { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
