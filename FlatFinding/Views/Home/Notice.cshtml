@@ -1,0 +1,30 @@
+﻿
+<div class="RecomendedArea mt-5 mb-3">
+
+
+    <div class="card userBookedList mb-3 mt-3">
+
+        <div class="card-body">
+            <h5 class="mb-3">See All Notice</h5>
+            <div class="row">
+                @foreach (var nt in ViewBag.Notice)
+                {
+                    <div class="col-sm-6">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h6 class="card-title">@nt.NoticeName</h6>
+                                <p> <small>@nt.PublishDate</small></p>
+                                <p class="card-text">@nt.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+          
+           
+        </div>
+
+
+    </div>
+
+</div>

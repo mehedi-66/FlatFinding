@@ -24,7 +24,14 @@ namespace FlatFinding.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Notice()
+        {
+            var Notice = await _context.Notices.ToListAsync();
+            ViewBag.Notice = Notice;
+            return View();
+        }
 
-     
+
+
     }
 }
