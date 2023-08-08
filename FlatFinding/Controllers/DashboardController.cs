@@ -1,10 +1,18 @@
-﻿using FlatFinding.Models;
+﻿using FlatFinding.Data;
+using FlatFinding.Migrations;
+using FlatFinding.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlatFinding.Controllers
 {
     public class DashboardController : Controller
     {
+        private readonly FlatFindingContext _context;
+        public DashboardController(FlatFindingContext context)
+        {
+            _context = context;
+        }
         public IActionResult UserProfile()
         {
             return View();
@@ -45,13 +53,15 @@ namespace FlatFinding.Controllers
         }
 
         [HttpGet]
-        public IActionResult Notice()
+        public async Task<IActionResult> Notice()
         {
+            var Notice = await _context.Notices.ToListAsync();
+            ViewBag.Notice = Notice;
             return View();
         }
 
         [HttpGet]
-        public IActionResult CreateNotice(int id = 0)
+        public async Task<IActionResult> CreateNotice(int id = 0)
         {
             if(id == 0)
             {
@@ -59,14 +69,46 @@ namespace FlatFinding.Controllers
             }
             else
             {
-                return View();
+                var notice = await _context.Notices
+               .FirstOrDefaultAsync(m => m.NoticeId == id);
+
+                return View(notice);
             }
 
         }
 
-        public IActionResult UpdateNotice(Notice model)
+        public async Task<IActionResult> UpdateNotice(Notice model)
         {
-            return View("Notice");
+            if (ModelState.IsValid)
+            {
+                if(model.NoticeId == 0)
+                {
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    _context.Update(model);
+                    await _context.SaveChangesAsync();
+                }
+               
+                return RedirectToAction("Notice");
+            }
+                return View("CreateNotice", model );
+        }
+
+        public async Task<IActionResult> NoticeDelete(int id)
+        {
+
+            var model = await _context.Notices.FindAsync(id);
+            if (model != null)
+            {
+                _context.Notices.Remove(model);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Notice");
         }
     }
 }
