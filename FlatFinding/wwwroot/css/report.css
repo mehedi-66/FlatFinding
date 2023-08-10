@@ -1,7 +1,7 @@
 ﻿.header {
     text-align: center;
     color: green;
-    padding-bottom: 35px;
+    padding-bottom: 5px;
 }
 
 table {
@@ -9,10 +9,16 @@ table {
     border-collapse: collapse;
 }
 
-td, th {
+th {
     border: 1px solid gray;
     padding: 5px;
-    font-size: 22px;
+    font-size: 20px;
+    text-align: center;
+}
+td {
+    border: 1px solid gray;
+    padding: 3px;
+    font-size: 18px;
     text-align: center;
 }
 
