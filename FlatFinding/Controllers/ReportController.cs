@@ -4,6 +4,7 @@ using DinkToPdf.Contracts;
 using FlatFinding.Data;
 using FlatFinding.Models;
 using FlatFinding.ReportTemplate;
+using FlatFinding.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -29,19 +30,81 @@ namespace FlatFinding.Controllers
             if(id == 1)
             {
                 //Custom Date
+                ViewBag.CustomDate = 1;
             }
             else if(id == 2)
             {
                 //Custom Date Range
+                ViewBag.CustomDateRange = 2;
             }
             else if(id == 3)
             {
                 //Custom Month
+                ViewBag.CustomMonth = 3;
             }
             
            return View();
             
            
+        }
+
+        public IActionResult Custom(CustomDateViewModel model)
+        {
+            string Header = "All";
+            var bookedList = _context.FlatBookeds.ToList();
+            var flatList = _context.Flats.ToList();
+            var userList = _userManager.Users.ToList();
+            List<JoinedFlatBookingData> joinedData = new List<JoinedFlatBookingData>();
+
+            if (model.Id == 1 && model.StartDate != null)
+            {
+                // date 
+                Header = "Custom Date";
+
+                bookedList = bookedList.Where(booking => booking.BookingDate.Date == model.StartDate?.Date).ToList();
+            }
+            else if(model.Id == 3 && model.StartDate != null)
+            {
+                // month
+                
+                Header = "Custom Month";
+                bookedList = bookedList.Where(booking =>
+                                            booking.BookingDate.Year == model.StartDate?.Date.Year &&
+                                            booking.BookingDate.Month == model.StartDate?.Date.Month
+                                            ).ToList();
+            }
+            else if(model.Id == 2 && model.StartDate != null && model.EndDate != null)
+            {
+                // date range
+                Header = "Custom Date Range";
+                bookedList = bookedList.Where(booking =>
+                                            booking.BookingDate.Date >= model.StartDate?.Date && 
+                                            booking.BookingDate.Date <= model.EndDate?.Date
+                                        ).ToList();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
+            var query = from booking in bookedList
+                        join flat in flatList on booking.FlatId equals flat.FlatId
+                        join user in userList on booking.OwnerId equals user.Id
+                        join user1 in userList on booking.UserId equals user1.Id
+                        select new JoinedFlatBookingData
+                        {
+                            FlatName = flat.Name,
+                            Address = $"H: {flat.HouseNo} R: {flat.RoadNo} S: {flat.sectorNo}, {flat.AreaName}",
+                            OwnerName = user.Name,
+                            BuyerName = user1.Name,
+                            BookingDate = booking.BookingDate,
+                            FlatCost = booking.FlatCost,
+                            FlatProfit = booking.FlatProfit
+                        };
+
+            joinedData = query.ToList();
+
+            return File(GetPDFFile(joinedData, Header), "application/pdf");
         }
 
         [HttpGet]
@@ -52,29 +115,34 @@ namespace FlatFinding.Controllers
             var flatList = _context.Flats.ToList();
             var userList = _userManager.Users.ToList();
             List<JoinedFlatBookingData> joinedData = new List<JoinedFlatBookingData>();
-            /* 
-             1) Todays
-            2)  Last 7 Days
-            3)  Last Month
-            4)  Generate All Booking
-             
-             */
+          
             if(id == 1)
             { // Todays Booking  
                 Header = "Todays";
+                DateTime today = DateTime.Today;
+
+                bookedList = bookedList.Where(booking => booking.BookingDate.Date == today).ToList();
             }
             else if(id == 2)
             { // Last 7 days  
                 Header = "Last 7 Days";
+                DateTime lastWeek = DateTime.Today.AddDays(-7);
+
+                bookedList = bookedList.Where(booking => booking.BookingDate >= lastWeek).ToList();
             }
             else if(id == 3)
             { // Last month 
                 Header = "Last Month";
+                DateTime today = DateTime.Today;
+                DateTime firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+                DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+                bookedList = bookedList.Where(booking => booking.BookingDate >= firstDayOfMonth && booking.BookingDate <= lastDayOfMonth).ToList();
             }
 
             var query = from booking in bookedList
                         join flat in flatList on booking.FlatId equals flat.FlatId
-                        join user in userList on flat.OwnerId equals user.Id
+                        join user in userList on booking.OwnerId equals user.Id
                         join user1 in userList on booking.UserId equals user1.Id
                         select new JoinedFlatBookingData
                         {
@@ -113,7 +181,7 @@ namespace FlatFinding.Controllers
                 HtmlContent = BookedHtmlTemplate.GetHtml(joinedData, Header),
                 WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(wwwRootPath, "css", "report.css") },
                 HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
-                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
+                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Flat Finding" }
             };
             var pdf = new HtmlToPdfDocument()
             {

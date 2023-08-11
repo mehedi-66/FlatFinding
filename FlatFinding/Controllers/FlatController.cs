@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using FlatFinding.ViewModel;
 
 namespace FlatFinding.Controllers
 {
@@ -21,9 +22,39 @@ namespace FlatFinding.Controllers
             _webHostEnvironment = webHostEnvironment;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var AllFlats = await _context.Flats
+                .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
+            ViewBag.Flats = AllFlats;
+            ViewBag.Count = AllFlats.Count;
             return View();
+        }
+        
+        public async Task<IActionResult> AreaWise(string id)
+        {
+            var AllFlats = await _context.Flats 
+                .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
+
+            AllFlats = AllFlats.Where(flat => flat.AreaName == id).ToList();
+
+            ViewBag.Flats = AllFlats;
+            ViewBag.Count = AllFlats.Count;
+            return View("Index");
+        }
+
+        public async Task<IActionResult> Search(SearchViewModel model)
+        {
+            var AllFlats = await _context.Flats
+                .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
+
+            AllFlats = AllFlats.Where(flat => ((flat.AreaName == model.Area)
+                                && (flat.TotalCost >= model.Price - 10000 && flat.TotalCost <= model.Price + 10000)
+                                && (int.Parse(flat.RoadNo) >= model.Room - 1 && int.Parse(flat.RoadNo) <= model.Room + 2)
+                                && (flat.Types == model.Type))).ToList();
+            ViewBag.Flats = AllFlats;
+            ViewBag.Count = AllFlats.Count;
+            return View("Index");
         }
 
         public async Task<IActionResult> FlatDetails(int? id)

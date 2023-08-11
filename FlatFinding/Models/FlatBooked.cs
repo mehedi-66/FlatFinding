@@ -19,8 +19,5 @@ namespace FlatFinding.Models
         public DateTime BookingDate { get; set; } = DateTime.Now;
 
 
-
-
-
     }
 }

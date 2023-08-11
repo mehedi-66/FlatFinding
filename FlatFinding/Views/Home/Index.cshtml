@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FlatFinding.ViewModel.SearchViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Flat Finding";
 }
@@ -9,7 +10,7 @@
             <div class="card bg-c-blue order-card">
                 <div class="card-block">
                     <h5 class="mb-2 text-center">Active User</h5>
-                    <h5 class="text-center">12030</h5>
+                    <h5 class="text-center">@ViewBag.UserCount</h5>
                 </div>
             </div>
         </div>
@@ -18,7 +19,7 @@
             <div class="card bg-c-green order-card">
                 <div class="card-block">
                     <h5 class="mb-2 text-center">Active Flat Owner</h5>
-                    <h5 class="text-center">450</h5>
+                    <h5 class="text-center">@ViewBag.OwnerCount</h5>
                 </div>
             </div>
         </div>
@@ -26,8 +27,8 @@
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-yellow order-card">
                 <div class="card-block">
-                    <h5 class="mb-2 text-center">Available Flat</h5>
-                    <h5 class="text-center">525</h5>
+                    <h5 class="mb-2 text-center">Number of Flats</h5>
+                    <h5 class="text-center">@ViewBag.AllFlats </h5>
                 </div>
             </div>
         </div>
@@ -36,7 +37,7 @@
             <div class="card bg-c-pink order-card">
                 <div class="card-block">
                     <h5 class="mb-2 text-center">Completed Booking</h5>
-                    <h5 class="text-center">740</h5>
+                    <h5 class="text-center"> @ViewBag.BookedFlats</h5>
                 </div>
             </div>
         </div>
@@ -57,7 +58,7 @@
 
                     <h5>Search </h5>
                   
-                    <form class="p-2">
+                    <form class="p-2" asp-controller="Flat" asp-action="Search" method="post">
 
                         @*<div class="text-center">
                         <input type="radio" /> <b style="margin-right: 30px">AI Recomanded Search</b>
@@ -66,8 +67,8 @@
 
                         <div class="row  mt-3">
                             <div class="col-6 mb-3">
-                                <label class="mb-1"><b> Select Area</b></label>
-                                <select class="form-control">
+                                <label asp-for="Area" class="mb-1"><b> Select Area</b></label>
+                                <select asp-for="Area" class="form-control">
                                 <option value="Airport">Airport</option>
                                 <option value="Uttara"> Uttara</option>
                                 <option value="Mirpur"> Mirpur</option>
@@ -79,13 +80,13 @@
                             </div>
 
                             <div class="col-6 mb-3">
-                                <label class="mb-1"> <b>Price Range</b></label>
-                                <input type="number" class="form-control" />
+                                <label asp-for="Price" class="mb-1"> <b>Price Range</b></label>
+                                <input asp-for="Price" type="number" class="form-control" />
                             </div>
 
                             <div class="col-6 mb-3">
-                                <label class="mb-1"> <b>Number of Rooms </b></label>
-                                <select class="form-control">
+                                <label asp-for="Room" class="mb-1"> <b>Number of Rooms </b></label>
+                                <select asp-for="Room" class="form-control">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -95,8 +96,8 @@
                                 </select>
                             </div>
                             <div class="col-6 mb-3">
-                                <label class="mb-1"><b>Type of Flat </b></label>
-                                <select class="form-control">
+                                <label asp-for="Type" class="mb-1"><b>Type of Flat </b></label>
+                                <select asp-for="Type" class="form-control">
                                     <option>Family</option>
                                     <option>Bachelor</option>
                                     <option>Sublate</option>
@@ -107,7 +108,7 @@
 
 
                         </div>
-                        <a class="btn btn-success mt-3 mb-3" asp-controller="Flat" asp-action="Index">Search Now</a>
+                        <button class="btn btn-success mt-3 mb-3">Search Now</button>
                     </form>
                 </div>
             </div>
@@ -117,12 +118,15 @@
                 <div class="card-header text-center">See Area wise</div>
                 <div class="card-body d-flex flex-wrap">
 
-
-                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Uttara (5)</a>
-                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Airport (7)</a>
+                    @foreach (var flat in ViewBag.AreaWise)
+                     {
+                        <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Flat" asp-action="AreaWise" asp-route-id="@flat.AreaName"> @flat.AreaName (@flat.FlatCount)</a>
+                     }
+                   
+                   @* <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Airport (7)</a>
                     <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Mirpur (15)</a>
                     <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Motijil (9)</a>
-                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Basundhara (11)</a>
+                    <a class="btn btn-outline-success mb-2" style="margin-right: 4px" asp-area="" asp-controller="Home" asp-action="Index">Basundhara (11)</a>*@
 
                 </div>
                @* <div class="p-2">

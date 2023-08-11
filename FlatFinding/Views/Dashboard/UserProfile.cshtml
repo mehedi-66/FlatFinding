@@ -1,7 +1,9 @@
-﻿@{
+﻿
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "User Dashboard";
-
+    var user = ViewBag.user;
+   
 }
 <div class="RecomendedArea mt-5 mb-3">
    
@@ -16,34 +18,31 @@
                   <div class="row">
                        <div class="col-6 mb-3 mt-3">
                    <b>Name:</b>
-                   <span class="mx-2">Mehedi Hasan</span>
+                    <span class="mx-2">@user.Name</span>
                </div>
                 
                 <div class="col-6  mb-3 mt-3">
                     <b>Father Name:</b>
-                    <span class="mx-2">Abul Kalam Azad</span>
+                            <span class="mx-2">@user.FatherName</span>
                 </div> 
                 <div class="col-6  mb-3">
                     <b>Mother Name:</b>
-                    <span class="mx-2">Moslema</span>
+                            <span class="mx-2">@user.MotherName</span>
                 </div>
                 <div class="col-6  mb-3">
                     <b>Address:</b>
-                    <span class="mx-2">Dhaka, Bangladesh</span>
+                            <span class="mx-2">@user.Address</span>
                 </div> 
-                <div class="col-6  mb-3">
-                    <b>Phone:</b>
-                    <span class="mx-2">01704725466</span>
-                </div>
+              
                 <div class="col-6  mb-3">
                     <b>Email:</b>
-                    <span class="mx-2">mehedisn3@gmail.com</span>
+                    <span class="mx-2">@user.Email</span>
                 </div>
                   </div>
               </div>
               <div class="col-4">
                    <div class="col-12 d-flex justify-content-end">
-                   <img class="mx-4" src="~/img/person.png"  style="width: 100px; height: 100px"/>
+                   <img class="mx-4" src="@user.Picture"  style="width: 100px; height: 100px"/>
                </div>
               </div>
               
@@ -71,30 +70,35 @@
                 <tr>
                     <th>Picture</th>
                     <th>Address</th>
+                    <th>Type</th>
                     <th>Cost</th>
-                    <th>Rooms</th>
                     <th>Status</th>
                     <th>Booking Date</th>
                     <th>Action</th>
                 </tr>
-           @for(int i = 0; i <=5; i++)
+                @if (ViewBag.bookedFlat.Count != 0)
            {
-              
-               <tr>
-                   <td>
-                       <img src="/img/flat.jpg" style="width: 50px; height: 45px" />
-                   </td>
-                   <td>H: 50, R: 10, Sc: 10, Uttara </td>
-                   <td>20000 tk/month</td>
-                   <td>4</td>
-                   <td>Paid</td>
-                   <td>02/07/2023</td>
-                        <td>
-                            <abbr title="Applicable within 24 hours">
-                        <a class="btn btn-primary" asp-controller="" asp-action=""> Cancel</a>
-                            </abbr>
-                    </td>
-               </tr>
+
+                    foreach (var flat in ViewBag.bookedFlat)
+                {
+                        <tr>
+                            <td>
+                               <img src="@flat.Picture" style="width: 50px; height: 45px" />
+                            </td>
+
+                            <td>@flat.Address</td>
+                            <td>@flat.Type</td>
+                            <td>@flat.Cost tk/month</td>
+                            <td>Paid</td>
+                            <td>@flat.Date</td>
+                            <td>
+
+                                <a class="btn btn-primary" asp-controller="" asp-action="">Print Details</a>
+
+                            </td>
+                        </tr>
+                }
+             
                
            }
 
