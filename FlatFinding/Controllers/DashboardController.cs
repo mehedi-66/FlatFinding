@@ -238,17 +238,30 @@ namespace FlatFinding.Controllers
 
         public IActionResult SendMailToSubscriber(string message, string subject)
         {
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("mehedihasan.asp.net@gmail.com"));
-            email.To.Add(MailboxAddress.Parse("mehedi04725466@gmail.com"));
-            email.Subject =subject;
-            email.Body = new TextPart(TextFormat.Html) { Text = message };
+            var subscriber =  _context.Suscribers.ToList();
 
-            using var smtp = new SmtpClient();
-            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("mehedihasan.asp.net@gmail.com", "qfelfkvfiobmwdyn");
-            smtp.Send(email);
-            smtp.Disconnect(true);
+            if(subscriber != null)
+            {
+                using var smtp = new SmtpClient();
+                smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                smtp.Authenticate("mehedihasan.asp.net@gmail.com", "qfelfkvfiobmwdyn");
+
+                foreach (var userEmail in subscriber)
+                {
+                    var email = new MimeMessage();
+                    email.From.Add(MailboxAddress.Parse("mehedihasan.asp.net@gmail.com"));
+                    email.To.Add(MailboxAddress.Parse(userEmail.email));
+                    email.Subject = subject;
+                    email.Body = new TextPart(TextFormat.Html) { Text = message };
+
+                   
+                    smtp.Send(email);
+                  
+                }
+                smtp.Disconnect(true);
+
+            }
+           
             return RedirectToAction("AdminDashboard");
         }
     }
