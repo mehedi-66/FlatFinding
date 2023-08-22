@@ -5,6 +5,9 @@ namespace FlatFinding.Models
     public class Flat
     {
         public int FlatId { get; set; }
+
+      
+        public string? OwnerId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -23,13 +26,15 @@ namespace FlatFinding.Models
         public string Available { get; set; }
         [Required]
         public string Types  { get; set; }
-        public string Picture { get; set; }
+        public string? Picture { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public string Phone { get; set; }
 
         public int Views { get; set; }
+
+        public int IsBooking { get; set; }
 
     }
 }

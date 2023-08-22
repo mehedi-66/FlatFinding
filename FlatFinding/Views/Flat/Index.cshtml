@@ -8,20 +8,24 @@
     <h5>Choose your Flat</h5>
       <small>Best Flat with affordable price</small>
     <div class="d-flex flex-wrap justify-content-center">
-        @for (int i = 0; i <= 6; i++)
+        @if(ViewBag.Count == 0)
+        {
+            <h3 aligin="center">No Search Results</h3>
+        }
+        @foreach (var item in ViewBag.Flats)
         {
             <div class="card mt-3 mb-3 " style="width: 300px; height:340px; margin-right: 20px;">
-                <img class="card-img-top" style="overflow: hidden" src="/img/flat3.jpg" alt="Card image cap">
+                <img class="card-img-top" style="overflow: hidden" src="@item.Picture" alt="Card image cap">
                 <div class="card-body">
                     <div>
-                        <small class="dec_flat"><b>Address:</b> H: 50, R: 10, Sc: 10, Uttara </small> <br />
-                        <small class="dec_flat "><b> Price:</b> 20000 tk/month </small>
-                        <small class="dec_flat mx-3"><b>  Type:</b> Family</small> <br />
-                        <small class="dec_flat"><b> Rooms:</b> 4</small>
+                        <small class="dec_flat"><b>Address:</b> H: @item.HouseNo, R: @item.RoadNo, Sc: @item.sectorNo, @item.AreaName </small> <br />
+                        <small class="dec_flat "><b> Price:</b> @item.TotalCost tk/month </small>
+                        <small class="dec_flat mx-3"><b>  Type:</b>@item.Types</small> <br />
+                        <small class="dec_flat"><b> Rooms:</b>@item.RoomNo</small>
                     </div>
                     <div>
-                        <b>Views</b> 200
-                        <a class="btn btn-primary" style="margin-left: 70px" asp-controller="Flat" asp-action="FlatDetails">Booked Now</a>
+                        <b>Views</b> @item.Views
+                        <a class="btn btn-primary" style="margin-left: 70px" asp-controller="Flat" asp-action="FlatDetails" asp-route-id="@item.FlatId">Booked Now</a>
                     </div>
                 </div>
             </div>

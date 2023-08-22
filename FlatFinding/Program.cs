@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using FlatFinding.Data;
 using FlatFinding.Models;
 using Microsoft.AspNetCore.Identity;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FlatFindingContext>(options =>
@@ -10,6 +12,7 @@ builder.Services.AddDbContext<FlatFindingContext>(options =>
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<FlatFindingContext>();
+ builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

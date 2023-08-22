@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FlatFinding.ViewModel.PaymentViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Payment";
 
@@ -10,12 +11,37 @@
     <div class="card paymentGetWay mb-3 mt-3">
 
         <div class="card-body d-flex flex-wrap justify-content-center">
-               @for (int i = 0; i <= 6; i++)
-               {
-                   <a asp-controller="Payment" asp-action="PaymentGetWay">
-                       <img class="paymentImg mb-2 mx-2"  src="/img/bkash.png" alt="Card image cap">
-                   </a>
-               }
+            <h6>Paid Amount: @ViewBag.Cost</h6>
+            <form asp-controller="Payment" asp-action="PaymentGetWay" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="row">
+
+                    <input asp-for="FlatId" value="@ViewBag.FlatId" hidden class="form-control" />
+                    <div class="form-group col-12 mb-2">
+                        <label asp-for="AccountType"></label>
+                        <select asp-for="AccountType" class="form-control">
+                            <option value="Bkash">Bkash</option>
+                        </select>
+                        <span asp-validation-for="AccountType" class="text-danger"></span>
+                    </div>
+                   <div class="col-12 mt-3">
+
+                        <img class="paymentImg mb-2 mx-2" src="/img/bkash.png" alt="Card image cap">
+                       
+                   </div>
+                
+
+              
+                <div class="form-group col-12 mb-3 mb-3">
+                    <label asp-for="AccountNo"></label>
+                    <input asp-for="AccountNo" class="form-control" />
+                    <span asp-validation-for="AccountNo" class="text-danger"></span>
+                </div>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </div>
+            </form>
+              
            
         </div>
 

@@ -1,0 +1,53 @@
+﻿<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-around">
+                <h5>Subscriber</h5>
+              
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table">
+                            <tr>
+                                <th>Email</th>
+
+                            </tr>
+                            @foreach (var ntc in ViewBag.Subscriber)
+                            {
+
+                                <tr>
+
+                                    <td>@ntc.email</td>
+
+                                </tr>
+
+                            }
+
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <form asp-controller="Dashboard" asp-action="SendMailToSubscriber" method="post">
+                            <div class="col-12 mb-3">
+                                <label for="subject" class="mb-1"> <b>Subject</b></label>
+                                <input for="subject" name="subject" rows="4" cols="8" type="text" class="form-control" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="message" class="mb-1"> <b>Type message</b></label>
+                                <textarea for="message" name="message" rows="4"  class="form-control" >
+
+                                </textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Send Mail</button>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+               
+            </div>
+
+        </div>
+    </div>
+</div>

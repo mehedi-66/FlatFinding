@@ -11,13 +11,14 @@ namespace FlatFinding.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
-
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public AccountController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, 
-                                    SignInManager<ApplicationUser> signInManager)
+                                    SignInManager<ApplicationUser> signInManager, IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         
@@ -25,24 +26,64 @@ namespace FlatFinding.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var roles = roleManager.Roles;
+            var roles = roleManager.Roles;//.Where(rol => rol.Name != "Admin").ToList();
+           
             ViewBag.Roles = roles;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model, IFormFile? file)
         {
             var role = await roleManager.FindByIdAsync(model.RoleId);
-            if(role == null)
+            var roles = roleManager.Roles; //.Where(rol => rol.Name != "Admin").ToList();
+            ViewBag.Roles = roles;
+            if (role == null)
             {
                 return View(model);
             }
 
             if(ModelState.IsValid)
             {
-                var user = new ApplicationUser() { Email = model.Email, UserName = model.Email,
-                    Address = model.Address, PhoneNumber = model.PhoneNumber, Name = model.Name
+
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"img");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if (model.Picture != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, model.Picture.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+
+                    model.Picture = @"\img\" + fileName + extension;
+
+                };
+
+                var user = new ApplicationUser()
+                {
+                    Email = model.Email,
+                    UserName = model.Email,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                    Name = model.Name,
+                    MotherName = model.MotherName,
+                    FatherName = model.FatherName,
+                    Picture = model.Picture
+
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
 
@@ -61,6 +102,8 @@ namespace FlatFinding.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+          
 
             return View(model);
         }
@@ -83,13 +126,24 @@ namespace FlatFinding.Controllers
             [HttpGet]
         public  IActionResult Login()
         {
+            var roles = roleManager.Roles;
+            ViewBag.Roles = roles;
             return View();
+
         }
 
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
         {
+            var role = await roleManager.FindByIdAsync(model.RoleId);
+            var roles = roleManager.Roles;
+            ViewBag.Roles = roles;
+
+            if (role == null)
+            {
+                return View(model);
+            }
             if (ModelState.IsValid)
             {
 
@@ -98,14 +152,22 @@ namespace FlatFinding.Controllers
 
                 if (result.Succeeded)
                 {
-                    if(! string.IsNullOrEmpty(returnUrl))
-                    {
+                   
+                        if(role.Name == "Admin")
+                        {
+                            return RedirectToAction("AdminDashboard", "Dashboard");
+                        }
+                        else if(role.Name == "User")
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if(role.Name == "Owner")
+                        {
+                            return RedirectToAction("FlatOwnerProfile", "Dashboard");
+                        }
                         return LocalRedirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                        
+                    
                    
                 }
 

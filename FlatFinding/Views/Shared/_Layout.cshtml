@@ -1,5 +1,6 @@
 ﻿
 @inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> _userManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +32,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Flat" asp-action="Index">Flats</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Flat" asp-action="Index">All Flats</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Notice">Notice</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="UserProfile">User Profile</a>
@@ -39,6 +43,15 @@
                         }
                         else if (signInManager.IsSignedIn(User) && User.IsInRole("Owner"))
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Flat" asp-action="Create">Create Flat</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Notice">Notice</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="FlatOwnerProfile">See Booked</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="FlatOwnerProfile">Owner Profile dash</a>
                             </li>
@@ -57,18 +70,22 @@
 
                         @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("User") || User.IsInRole("Owner")))
                         {
+                            var user = await _userManager.GetUserAsync(User);
+                           if(user != null){
+                                <li class="nav-item">
+                                    <p class="btn nav-link text-dark">  @user.Name </p>
+
+                                </li>
+
+                           }
                            
-                            <li class="nav-item">
-                                <p class="btn nav-link text-dark"> @User.Identity.Name </p>
-                                   
-                            </li>
+                                <li class="nav-item">
+                                    <form method="POST">
+                                        <button type="submit" class="btn light btn-sm btn-primary  nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</button>
+                                    </form>
 
-                            <li class="nav-item">
-                                <form method="POST">
-                                    <button type="submit" class="btn light btn-sm btn-primary  nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</button>
-                                </form>
-
-                            </li>
+                                </li>
+                           
 
                         }
                         else{

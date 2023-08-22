@@ -13,19 +13,19 @@
                         <th>Publish Date</th>
                         <th>Action</th>
                     </tr>
-                    @for (int i = 0; i <= 5; i++)
+                    @foreach (var ntc in ViewBag.Notice)
                     {
 
                         <tr>
-                           
-                            <td>Good News </td>
-                            <td>Good News </td>
-                           
-                            <td>02/07/2023</td>
+
+                            <td>@ntc.NoticeName</td>
+                            <td>@ntc.Description</td>
+
+                            <td>@ntc.PublishDate</td>
                             <td>
-                              
-                                    <a class="btn btn-primary" asp-controller="" asp-action=""> Update</a>
-                                    <a class="btn btn-danger" asp-controller="" asp-action="">Delete</a>
+
+                                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="CreateNotice" asp-route-id="@ntc.NoticeId"> Update</a>
+                                <a class="btn btn-danger" asp-controller="Dashboard" asp-action="NoticeDelete" asp-route-id="@ntc.NoticeId">Delete</a>
                               
                             </td>
                         </tr>

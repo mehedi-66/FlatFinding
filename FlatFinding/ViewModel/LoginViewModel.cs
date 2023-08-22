@@ -12,6 +12,9 @@ namespace FlatFinding.ViewModel
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        [Display(Name = "Role")]
+        public string RoleId { get; set; }
 
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }

@@ -13,7 +13,7 @@
         <div class="card-body">
             <h5>Flat Info</h5>
 
-            <form asp-controller="Flat" asp-action="Update" class="p-2" method="post">
+            <form asp-controller="Flat" asp-action="Update" class="p-2" method="post" enctype="multipart/form-data">
 
                 <div class="row  mt-3">
                     <div class="col-6 mb-3">
@@ -78,8 +78,9 @@
                         <span asp-validation-for="Types" class="text-danger"></span>
                     </div>
                      <div class="col-6 mb-3">
-                        <label>Upload Picture</label>
-                        <input type="file" class="form-control" />
+                        <label asp-for="Picture">Upload Picture</label>
+                        <input type="file" name="file" class="form-control" />
+                        <span asp-validation-for="Picture" class="text-danger"></span>
                     </div> 
                     <div class="col-6 mb-3">
                         <label asp-for="Phone">Phone Number</label>

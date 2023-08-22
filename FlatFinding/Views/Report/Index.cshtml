@@ -1,20 +1,12 @@
-﻿<div class="container">
+﻿@model FlatFinding.ViewModel.CustomDateViewModel
+
+<div class="container">
     <div class="card" style="padding: 25px;">
             <h5 class="mb-3">Report Generate of Booking Flat</h5>
         <div class="row">
+           
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
-                    <div class="card bg-c-blue order-card">
-                        <div class="card-block" style="padding: 10px;">
-                            <h5 class="text-center">All In one</h5>
-                        </div>
-                    </div>
-                </a>
-
-            </div>
-
-            <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="1" target="_blank">
                     <div class="card bg-c-green order-card">
                         <div class="card-block" style="padding: 10px;">
                             <h5 class="text-center">Todays</h5>
@@ -24,7 +16,7 @@
             </div>
 
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="2" target="_blank">
                     <div class="card bg-c-yellow order-card">
                         <div class="card-block" style="padding: 10px;">
                             <h5 class="text-center">Last 7 Days</h5>
@@ -34,7 +26,7 @@
             </div>
 
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="3" target="_blank">
                     <div class="card bg-c-pink order-card">
                         <div class="card-block" style="padding: 10px;">
                             <h5 class="text-center">Last Month</h5>
@@ -43,7 +35,7 @@
                 </a>
             </div>
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="Index" asp-route-id="1">
                     <div class="card bg-c-pink order-card">
                         <div class="card-block" style="padding: 10px;">
                             <h5 class="text-center">Custom Date</h5>
@@ -52,7 +44,18 @@
                 </a>
             </div>
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="Index" asp-route-id="2" >
+                    <div class="card bg-c-blue order-card">
+                        <div class="card-block" style="padding: 10px;">
+                            <h5 class="text-center">Custom Date Range</h5>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="col-md-4 col-xl-3">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="Index" asp-route-id="3" >
                     <div class="card bg-c-blue order-card">
                         <div class="card-block" style="padding: 10px;">
                             <h5 class="text-center">Custom Month</h5>
@@ -61,25 +64,71 @@
                 </a>
 
             </div>
+           
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
-                    <div class="card bg-c-green order-card">
-                        <div class="card-block"style="padding: 10px;">
-                            <h5 class="text-center">Only Total Profit</h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="" asp-action="">
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="4" >
                     <div class="card bg-c-yellow order-card">
                         <div class="card-block" style="padding: 10px;">
-                            <h5 class="text-center">Generate All Graph</h5>
+                            <h5 class="text-center">Generate All Booking</h5>
                         </div>
                     </div>
                 </a>
             </div>
         </div>
+    
+        @if (ViewBag.CustomDate == 1){
+            <form method="post" asp-controller="Report" asp-action="Custom" target="_blank">
+                <input asp-for="Id" hidden />
+                <div class="row mt-3 w-50" align="center" style="margin: 0 auto;">
+                    <h5>Custom Date</h5>
+                    <div class="col-6 mb-3">
+                        <label asp-for="StartDate">Select Date</label>
+                        <input asp-for="StartDate" type="date" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <button  class="btn btn-primary">  Generate</button>
+                </div>
+              
+            </form>
+               
+        }
+        else if( ViewBag.CustomDateRange == 2)
+        {
+               <form method="post" asp-controller="Report" asp-action="Custom" target="_blank">
+                <input asp-for="Id" hidden />
+                <div class="row mt-3 w-50" align="center" style="margin: 0 auto;">
+                <h5>Custom Range</h5>
+                <div class="col-6 mb-3">
+                    <label asp-for="StartDate">Start Date</label>
+                    <input asp-for="StartDate" type="date" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="col-6 mb-3">
+                    <label asp-for="EndDate">End Date</label>
+                    <input asp-for="EndDate" type="date" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+                    <button class="btn btn-primary">  Generate</button>
+                </div>
+
+            </form>
+        }
+        else if (ViewBag.CustomMonth == 3)
+        {   <form method="post" asp-controller="Report" asp-action="Custom" target="_blank">
+                <input asp-for="Id" hidden />
+                <div class="row mt-3 w-50" align="center" style="margin: 0 auto;">
+                <h5>Custom Month</h5>
+                <div class="col-6 mb-3">
+                    <label asp-for="StartDate">Select a date of Month</label>
+                    <input asp-for="StartDate" type="date" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                    <button class="btn btn-primary">  Generate</button>
+                </div>
+
+            </form>
+        }
+        
     </div>
     
 </div>
