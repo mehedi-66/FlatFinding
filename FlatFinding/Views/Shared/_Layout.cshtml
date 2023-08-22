@@ -71,18 +71,21 @@
                         @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("User") || User.IsInRole("Owner")))
                         {
                             var user = await _userManager.GetUserAsync(User);
+                           if(user != null){
+                                <li class="nav-item">
+                                    <p class="btn nav-link text-dark">  @user.Name </p>
+
+                                </li>
+
+                           }
                            
-                            <li class="nav-item">
-                                <p class="btn nav-link text-dark">  @user.Name </p>
-                                   
-                            </li>
+                                <li class="nav-item">
+                                    <form method="POST">
+                                        <button type="submit" class="btn light btn-sm btn-primary  nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</button>
+                                    </form>
 
-                            <li class="nav-item">
-                                <form method="POST">
-                                    <button type="submit" class="btn light btn-sm btn-primary  nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</button>
-                                </form>
-
-                            </li>
+                                </li>
+                           
 
                         }
                         else{

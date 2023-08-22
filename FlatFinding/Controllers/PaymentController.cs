@@ -70,7 +70,7 @@ namespace FlatFinding.Controllers
             await _context.SaveChangesAsync();
             
             // Redicent to User Profile and Report Generate Pdf 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

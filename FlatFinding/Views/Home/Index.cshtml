@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div class="">
+<div class="mb-3">
     <div class="d-flex container HeaderBanar">
         <div class="HomeHeaderLef">
             @*TODO:
@@ -165,5 +165,26 @@
             }
         </div>
 
+    </div>
+
+    <div class="RecomendedArea">
+        <div class="card" style="background: #e1e1e1;">
+            <div class="card-body">
+                  <form asp-controller="home" asp-action="suscriber" method="post">
+                      <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4 mb-3">
+                            <label for="email" class="mb-1"> <b>Subscribe with your Email</b></label>
+                            <input for="email" name="email" type="email" class="form-control" />
+                           
+                        </div>
+                        <div class="col-2 mt-4">
+                            <button type="submit" class="btn btn-primary">Subscribe</button>
+                        </div>
+                      </div>
+                </form>
+            </div>
+        </div>
+      
     </div>
 </div>

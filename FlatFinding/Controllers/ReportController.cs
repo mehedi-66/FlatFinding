@@ -108,12 +108,12 @@ namespace FlatFinding.Controllers
         }
 
         [HttpGet]
-        public IActionResult AllBookingReport(int id)
+        public  IActionResult AllBookingReport(int id)
         {
             string Header = "All";
             var bookedList = _context.FlatBookeds.ToList();
             var flatList = _context.Flats.ToList();
-            var userList = _userManager.Users.ToList();
+            var userList = _userManager.Users;
             List<JoinedFlatBookingData> joinedData = new List<JoinedFlatBookingData>();
           
             if(id == 1)

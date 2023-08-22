@@ -5,6 +5,12 @@ using FlatFinding.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MailKit.Security;
+using MimeKit.Text;
+using MimeKit;
+using Org.BouncyCastle.Asn1.Ocsp;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+using MailKit.Net.Smtp;
 
 namespace FlatFinding.Controllers
 {
@@ -221,6 +227,29 @@ namespace FlatFinding.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Notice");
+        }
+
+        public async Task<IActionResult> Subscriber()
+        {
+          var subscriber = await _context.Suscribers.ToListAsync();
+          ViewBag.Subscriber = subscriber;
+            return View();
+        }
+
+        public IActionResult SendMailToSubscriber(string message, string subject)
+        {
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("mehedihasan.asp.net@gmail.com"));
+            email.To.Add(MailboxAddress.Parse("mehedi04725466@gmail.com"));
+            email.Subject =subject;
+            email.Body = new TextPart(TextFormat.Html) { Text = message };
+
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("mehedihasan.asp.net@gmail.com", "qfelfkvfiobmwdyn");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+            return RedirectToAction("AdminDashboard");
         }
     }
 }

@@ -69,6 +69,23 @@ namespace FlatFinding.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> suscriber(string email)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                Suscriber sub = new Suscriber()
+                {
+                    email = email
+                };
+                _context.Suscribers.Add(sub);
+                await _context.SaveChangesAsync();
+            }
+
+
+            return RedirectToAction("Index");
+        }
+
 
 
     }

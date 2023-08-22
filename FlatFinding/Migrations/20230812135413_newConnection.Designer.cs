@@ -4,6 +4,7 @@ using FlatFinding.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlatFinding.Migrations
 {
     [DbContext(typeof(FlatFindingContext))]
-    partial class FlatFindingContextModelSnapshot : ModelSnapshot
+    [Migration("20230812135413_newConnection")]
+    partial class newConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,23 +230,6 @@ namespace FlatFinding.Migrations
                     b.HasKey("NoticeId");
 
                     b.ToTable("Notices");
-                });
-
-            modelBuilder.Entity("FlatFinding.Models.Suscriber", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Suscribers");
                 });
 
             modelBuilder.Entity("FlatFinding.Models.UserModel", b =>
