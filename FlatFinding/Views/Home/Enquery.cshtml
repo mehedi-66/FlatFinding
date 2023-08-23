@@ -1,0 +1,48 @@
+﻿@model FlatFinding.Models.Enquery
+
+<div class="RecomendedArea mt-5 mb-3">
+
+
+    <div class="card userBookedList mb-3 mt-3">
+
+        <div class="card-body">
+            <h5 class="mb-3">Submit your Question / Suggestion</h5>
+            <form asp-controller="Home" asp-action="Enquery" method="post">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label asp-for="Name" class="mb-1"> <b>Your Name</b></label>
+                        <input asp-for="Name" type="text" class="form-control" />
+                    </div>
+               
+              
+                    <div class="col-6 mb-3">
+                        <label asp-for="Contact" class="mb-1"> <b>Contact</b></label>
+                        <input asp-for="Contact" type="text" class="form-control" />
+                    </div>
+
+              
+                    <div class="col-12 mb-3">
+                        <label asp-for="Subject" class="mb-1"> <b>Query Subject</b></label>
+                        <input asp-for="Subject" type="text" class="form-control" />
+                    </div> 
+                    
+                    <div class="col-12 mb-3">
+                        <label asp-for="query" class="mb-1"> <b>Write your Query</b></label>
+                        <textarea asp-for="query" rows="4" type="text" class="form-control" >
+
+                        </textarea>
+                    </div>
+
+                  
+                        <button type="submit" class="btn btn-primary">Send</button>
+                   
+                </div>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+</div>

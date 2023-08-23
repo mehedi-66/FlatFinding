@@ -264,5 +264,12 @@ namespace FlatFinding.Controllers
            
             return RedirectToAction("AdminDashboard");
         }
+
+        public IActionResult Enquery()
+        {
+            var enqueries = _context.Enqueries.ToList();
+            ViewBag.Enquery = enqueries;
+            return View();
+        }
     }
 }

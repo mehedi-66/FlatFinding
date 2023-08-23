@@ -34,7 +34,37 @@
             <a class="btn btn-primary mx-3" asp-controller="Payment" asp-action="Index" asp-route-id="@flatInfo.FlatId">Payment</a>
             </div>
           
-                  
+        <div class="row w-75 mx-3">
+            <form asp-controller="Flat" asp-action="Comment" method="post" >
+                <input hidden name="FlatId" value="@flatInfo.FlatId" />
+             
+                <div class="col-12 mb-3">
+                    <label for="comment" class="mb-1"> <b>Write your Comment</b></label>
+                    <textarea name="comment" rows="4" type="text" class="form-control" ></textarea>
+                </div>
+                <div class="d-flex justify-content-end mx-4">
+                      <button type="submit" class="btn btn-sm btn-primary">Comment</button>
+                </div>
+            </form>
+
+            <div>
+                <h5>See All Comments</h5>
+                <div class="row w-50">
+                    @foreach(var item in ViewBag.Comments)
+                    {
+                         <div class="col-6 mb-3">
+                        <p>Name: @item.Name </p>
+                        <p><small>Date: @item.Date</small></p>
+                        <p>@item.comment</p>
+                        </div>
+                        <div class="col-6"></div>
+                    }
+                   
+                </div>
+            </div>
+
+        </div>               
     </div>
+   
 
 </div>

@@ -20,5 +20,7 @@ namespace FlatFinding.Data
         public DbSet<FlatFinding.Models.Notice> Notices { get; set; } = default!; 
         public DbSet<FlatFinding.Models.FlatBooked> FlatBookeds { get; set; } = default!;
         public DbSet<FlatFinding.Models.Suscriber> Suscribers { get; set; } = default!;
+        public DbSet<FlatFinding.Models.Enquery> Enqueries { get; set; } = default!;
+        public DbSet<FlatFinding.Models.Comment> Comments { get; set; } = default!;
     }
 }

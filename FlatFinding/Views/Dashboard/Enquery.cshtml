@@ -1,0 +1,32 @@
+﻿<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-around">
+                <h5>Submited Enquery</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Subject</th>
+                        <th>Query</th>
+                    </tr>
+                    @foreach (var user in ViewBag.Enquery)
+                    {
+
+                        <tr>
+                            <td>@user.Name</td>
+                            <td>@user.Contact</td>
+                            <td>@user.Subject</td>
+                            <td>@user.query </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

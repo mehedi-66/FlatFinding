@@ -2,6 +2,7 @@
 using FlatFinding.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -84,6 +85,31 @@ namespace FlatFinding.Controllers
 
 
             return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public IActionResult Enquery()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Enquery(Enquery model)
+        {
+            if(ModelState.IsValid)
+            {
+                _context.Enqueries.Add(model);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Enquery");
+            }
+            else
+            {
+                return View(model);
+            }
+           
+            
         }
 
 

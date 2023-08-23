@@ -61,6 +61,8 @@ namespace FlatFinding.Controllers
         {
             var FlatDetail = await _context.Flats
                 .FirstOrDefaultAsync(m => m.FlatId == id);
+            var comments = await _context.Comments
+                .Where(f => f.FlatId == id).ToListAsync();
 
             if (FlatDetail == null) 
                 return NotFound();
@@ -73,6 +75,7 @@ namespace FlatFinding.Controllers
             await _context.SaveChangesAsync();
 
             ViewBag.FlatDetail = FlatDetail;
+            ViewBag.Comments = comments;
 
             return View();
         }
@@ -121,6 +124,34 @@ namespace FlatFinding.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Comment(int FlatId, string comment)
+        {
+            try
+            {
+                var userId = _userManager.GetUserId(HttpContext.User);
+                var user = await _userManager.FindByIdAsync(userId);
+                Comment comt = new Comment()
+                {
+                    FlatId = FlatId,
+                    comment = comment,
+                    Date = DateTime.UtcNow,
+                    Name = user.Name,
+                };
+
+                _context.Comments.Add(comt);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception)
+            {
+                
+            }
+
+
+            return RedirectToAction("FlatDetails", new { id = FlatId });
         }
     }
 }
