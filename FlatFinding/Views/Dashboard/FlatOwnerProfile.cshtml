@@ -79,8 +79,8 @@
                             <td>@item.RoomNo</td>
                             <td>@item.Available</td>
                             <td>
-                                <a class="btn btn-primary" asp-controller="Flat" asp-action="UpdateFlat" asp-route-id="">Update</a>
-                                <a class="btn btn-danger" asp-controller="Flat" asp-action="DeleteFlat">Delete</a>
+                                <a class="btn btn-primary" asp-controller="Flat" asp-action="UpdateFlat" asp-route-id="@item.FlatId">Update</a>
+                                <a class="btn btn-danger" asp-controller="Flat" asp-action="DeleteFlat" asp-route-id="@item.FlatId">Delete</a>
                             </td>
                         </tr>
 

@@ -127,6 +127,73 @@ namespace FlatFinding.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult UpdateFlat(int id)
+        {
+            var model = _context.Flats.FirstOrDefault(x => x.FlatId == id);
+
+            ViewBag.Picture = model.Picture;
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateFlat(Flat model, IFormFile? file)
+        {
+           
+           var flat =  _context.Flats.AsNoTracking().FirstOrDefault(f => f.FlatId == model.FlatId);
+                
+                
+            
+           
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"img");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if (model.Picture != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, model.Picture.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+
+                flat.Picture = @"\img\" + fileName + extension;
+
+                };
+
+
+            model.Picture = flat.Picture;
+            model.OwnerId= flat.OwnerId;
+
+                _context.Flats.Update(model);
+             _context.SaveChanges();
+            return RedirectToAction("UpdateFlat", new {id = model.FlatId});
+            
+            return View(model);
+        }
+        public async Task<IActionResult> DeleteFlat(int id)
+        {
+            var userModel = await _context.Flats.FindAsync(id);
+            if (userModel != null)
+            {
+                _context.Flats.Remove(userModel);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("FlatOwnerProfile", "Dashboard");
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Comment(int FlatId, string comment)

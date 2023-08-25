@@ -1,0 +1,120 @@
+﻿@model FlatFinding.Models.Flat
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create Flat";
+
+}
+
+<div class="RecomendedArea mt-5 mb-3">
+   
+
+    <div class="card userBookedList mb-3 mt-3">
+
+        <div class="card-body">
+            <h5>Flat Info Update</h5>
+             
+            <form asp-controller="Flat" asp-action="UpdateFlat" class="p-2" method="post" enctype="multipart/form-data">
+
+                <input hidden asp-for="FlatId" />
+                <div class="row  mt-3">
+                    <div class="col-8">
+                        <div class="row">
+
+                        
+                        <div class="col-6 mb-3">
+                            <label asp-for="Name">Flat Name</label>
+                            <input asp-for="Name" type="text" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="HouseNo">House No</label>
+                            <input asp-for="HouseNo" type="number" class="form-control" />
+                            <span asp-validation-for="HouseNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="RoadNo">Road No</label>
+                            <input asp-for="RoadNo" type="number" class="form-control" />
+                            <span asp-validation-for="RoadNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="sectorNo">Sector No</label>
+                            <input asp-for="sectorNo" type="number" class="form-control" />
+                            <span asp-validation-for="sectorNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="AreaName">Area Name</label>
+                            <select asp-for="AreaName" class="form-control">
+                                <option value="Airport">Airport</option>
+                                <option value="Uttara"> Uttara</option>
+                                <option value="Mirpur"> Mirpur</option>
+                                <option value="Bonani"> Bonani</option>
+                                <option value="Gulsan"> Gulsan</option>
+                                <option value="Dhanmondi"> Dhanmondi</option>
+                                <option value="Motijil"> Motijil</option>
+                            </select>
+                            <span asp-validation-for="AreaName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                            <label asp-for="TotalCost"> Total Cost per month</label>
+                            <input asp-for="TotalCost" type="text" class="form-control" />
+                            <span asp-validation-for="TotalCost" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="RoomNo">Rooms</label>
+                            <input asp-for="RoomNo" type="text" class="form-control" />
+                            <span asp-validation-for="RoomNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="Available">Available</label>
+                            <select asp-for="Available" class="form-control">
+                                <option value="YES">YES</option>
+                                <option value="NO">NO</option>
+                            </select>
+                            <span asp-validation-for="Available" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="Types">Types</label>
+                            <select asp-for="Types" class="form-control">
+                                <option value="Family">Family</option>
+                                <option value="Bacelor">Bacelor</option>
+                                <option value="Sublate">Sublate</option>
+                            </select>
+                            <span asp-validation-for="Types" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="Picture">Upload Picture</label>
+                            <input type="file" name="file" class="form-control" />
+                            <span asp-validation-for="Picture" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="Phone">Phone Number</label>
+                            <input asp-for="Phone" type="text" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label asp-for="Description">Flat Description</label>
+                            <textarea asp-for="Description" type="text" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-12 d-flex justify-content-end">
+                <img class="mx-4" src="@ViewBag.Picture" style="width: 200px; height: 150px" />
+                </div>
+                    </div>
+                   
+
+                    
+                   
+                </div>
+                <button type="submit" class="btn btn-success mt-3 mb-3" >Update</button>
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
