@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FlatFinding.Models;
+using System.Data;
+using Org.BouncyCastle.Asn1.X509;
+using System.Xml.Linq;
 
 namespace FlatFinding.Controllers
 {
@@ -26,7 +29,7 @@ namespace FlatFinding.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var roles = roleManager.Roles;//.Where(rol => rol.Name != "Admin").ToList();
+            var roles = roleManager.Roles.Where(rol => rol.Name != "Admin").ToList();
            
             ViewBag.Roles = roles;
             return View();
@@ -105,6 +108,82 @@ namespace FlatFinding.Controllers
 
           
 
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            
+
+            var model = await userManager.FindByIdAsync(id);
+
+            UpdateUserViewModel user = new UpdateUserViewModel()
+            {
+                id = id,
+                Email = model.Email,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
+                Name = model.Name,
+                MotherName = model.MotherName,
+                FatherName = model.FatherName,
+                Picture = model.Picture
+            };
+            
+            ViewBag.Picture = model.Picture;
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(UpdateUserViewModel model, IFormFile? file)
+        {
+            var user = await userManager.FindByIdAsync(model.id);
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(wwwRootPath, @"img");
+                var extension = Path.GetExtension(file.FileName);
+
+                if (model.Picture != null)
+                {
+                    var oldImagePath = Path.Combine(wwwRootPath, model.Picture.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+
+                using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStreams);
+                }
+
+                user.Picture = @"\img\" + fileName + extension;
+
+            }
+
+            user.Address = model.Address;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Name = model.Name;
+            user.MotherName = model.MotherName;
+            user.FatherName = model.FatherName;
+            
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+
+                return RedirectToAction("EditUser", "Account", new {id = model.id});
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
             return View(model);
         }
 

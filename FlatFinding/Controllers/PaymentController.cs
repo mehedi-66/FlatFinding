@@ -1,11 +1,16 @@
-﻿using FlatFinding.Data;
+﻿using DinkToPdf;
+using DinkToPdf.Contracts;
+using FlatFinding.Data;
 using FlatFinding.Models;
 using FlatFinding.Models.PaymentGetway;
+using FlatFinding.ReportTemplate;
 using FlatFinding.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using System.Collections.Specialized;
 using System.Data;
 
@@ -14,13 +19,18 @@ namespace FlatFinding.Controllers
     [Authorize(Roles = "User")]
     public class PaymentController : Controller
     {
+        private IConverter _converter;
         private readonly FlatFindingContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PaymentController(UserManager<ApplicationUser> userManager, FlatFindingContext context)
+        public PaymentController(IConverter converter, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, FlatFindingContext context)
         {
             _context = context;
             _userManager = userManager;
+            _converter = converter;
+            _webHostEnvironment = webHostEnvironment;
+
         }
         public async Task<IActionResult> Index(int? id)
         {
@@ -86,12 +96,8 @@ namespace FlatFinding.Controllers
         public async Task<IActionResult> PaymentGetWay(int id)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            // If All okay then booked the flat
-            // and make flat avilable NO
-            // All detail info Pdf shwo to user for download 
-            // if success other wise only confirm Message Tost Notification 
 
-            // comission 1000 + (5)
+
 
 
             var FlatDetail = await _context.Flats
@@ -107,7 +113,7 @@ namespace FlatFinding.Controllers
                 FlatCost = FlatDetail.TotalCost,
                 FlatProfit = (FlatDetail.TotalCost / 1000) + 20,
                 BookingDate = DateTime.Now,
-                PaymentId =  new Random().Next(int.MinValue, int.MaxValue).ToString(),
+                PaymentId = new Random().Next(int.MinValue, int.MaxValue).ToString(),
             };
 
             // Save Booked 
@@ -118,9 +124,64 @@ namespace FlatFinding.Controllers
             FlatDetail.IsBooking = 1;
             _context.Update(FlatDetail);
             await _context.SaveChangesAsync();
-            
+
+
+            // Invoice Report Generate
+            string Header = "";
+            var bookedList = _context.FlatBookeds.Where(b => b.FlatId == id).ToList();
+            var flatList = _context.Flats.ToList();
+            var userList = _userManager.Users;
+            JoinedFlatBookingData joinedData = new JoinedFlatBookingData();
+
+            var query = from booking in bookedList
+                        join flat in flatList on booking.FlatId equals flat.FlatId
+                        join user in userList on booking.OwnerId equals user.Id
+                        join user1 in userList on booking.UserId equals user1.Id
+                        select new JoinedFlatBookingData
+                        {
+                            FlatName = flat.Name,
+                            Address = $"H: {flat.HouseNo} R: {flat.RoadNo} S: {flat.sectorNo}, {flat.AreaName}",
+                            Type = flat.Types.ToString(),
+                            OwnerName = user.Name,
+                            OwnerPhone = user.PhoneNumber,
+                            BuyerName = user1.Name,
+                            BuyerPhone= user1.PhoneNumber,
+                            BookingDate = booking.BookingDate,
+                            FlatCost = booking.FlatCost,
+                        };
+            joinedData = query.FirstOrDefault();
+
             // Redicent to User Profile and Report Generate Pdf 
-            return RedirectToAction("Index", "Home");
+            return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");
+           
+        }
+        public byte[] GetPDFFileForInvoice(JoinedFlatBookingData joinedData, string Header)
+        {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+            var globalSettings = new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings { Top = 10 },
+                DocumentTitle = "PDF Report"
+            };
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = InvoiceHtmlTemplate.GetHtml(joinedData, Header),
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(wwwRootPath, "css", "invoice.css") },
+                HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Flat Finding" }
+            };
+            var pdf = new HtmlToPdfDocument()
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+            byte[] file = _converter.Convert(pdf);
+            return file;
         }
     }
 }

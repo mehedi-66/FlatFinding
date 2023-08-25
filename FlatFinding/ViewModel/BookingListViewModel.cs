@@ -4,6 +4,7 @@ namespace FlatFinding.ViewModel
 {
     public class BookingListViewModel
     {
+        public int FlatBookedId { get; set; }
         public string Address { get; set; }
         public string Picture { get; set; }
         public string Type { get; set; }

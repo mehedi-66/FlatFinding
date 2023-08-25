@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a class="btn btn-primary mx-4" asp-controller="" asp-action="">Edit</a>
+                <a class="btn btn-primary mx-4" asp-controller="Account" asp-action="EditUser" asp-route-id="@ViewBag.user.Id">Edit</a>
             </div>
 
         </div>
@@ -79,8 +79,8 @@
                             <td>@item.RoomNo</td>
                             <td>@item.Available</td>
                             <td>
-                                <a class="btn btn-primary" asp-controller="" asp-action="">Update</a>
-                                <a class="btn btn-danger" asp-controller="" asp-action="">Delete</a>
+                                <a class="btn btn-primary" asp-controller="Flat" asp-action="UpdateFlat" asp-route-id="">Update</a>
+                                <a class="btn btn-danger" asp-controller="Flat" asp-action="DeleteFlat">Delete</a>
                             </td>
                         </tr>
 
@@ -133,7 +133,7 @@
                             <td>@flat.Date</td>
                             <td>
 
-                                <a class="btn btn-primary" asp-controller="" asp-action="">Print Details</a>
+                                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="BookingReport" asp-route-id="@flat.FlatBookedId" target="_blank">Print Details</a>
 
                             </td>
                         </tr>

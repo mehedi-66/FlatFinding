@@ -48,7 +48,7 @@
               
            </div>
            <div class="d-flex justify-content-end">
-               <a class="btn btn-primary mx-4" asp-controller="" asp-action="" >Edit</a>
+                <a class="btn btn-primary mx-4" asp-controller="Account" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
            </div>
 
         </div>
@@ -93,7 +93,7 @@
                             <td>@flat.Date</td>
                             <td>
 
-                                <a class="btn btn-primary" asp-controller="" asp-action="">Print Details</a>
+                                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="BookingReport" target="_blank" asp-route-id="@flat.FlatBookedId">Print Details</a>
 
                             </td>
                         </tr>
