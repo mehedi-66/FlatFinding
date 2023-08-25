@@ -49,15 +49,15 @@
 
             <div>
                 <h5>See All Comments</h5>
-                <div class="row w-50">
+                <div class="row w-100">
                     @foreach(var item in ViewBag.Comments)
                     {
-                         <div class="col-6 mb-3">
-                        <p>Name: @item.Name </p>
-                        <p><small>Date: @item.Date</small></p>
-                        <p>@item.comment</p>
+                         <div class="col-12 mb-3">
+                            <p><b>@item.Name </b> <br/><small>@item.Date</small><br/>
+
+                                @item.comment</p>
                         </div>
-                        <div class="col-6"></div>
+                        @*<div class="col-6"></div>*@
                     }
                    
                 </div>

@@ -152,7 +152,11 @@ namespace FlatFinding.Controllers
 
                 if (result.Succeeded)
                 {
-                   
+                    if(returnUrl != null)
+                    {
+                        return Redirect(returnUrl);
+                    }
+                         
                         if(role.Name == "Admin")
                         {
                             return RedirectToAction("AdminDashboard", "Dashboard");

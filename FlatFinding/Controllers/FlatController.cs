@@ -48,10 +48,11 @@ namespace FlatFinding.Controllers
             var AllFlats = await _context.Flats
                 .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
 
-            AllFlats = AllFlats.Where(flat => ((flat.AreaName == model.Area)
-                                && (flat.TotalCost >= model.Price - 10000 && flat.TotalCost <= model.Price + 10000)
-                                && (int.Parse(flat.RoadNo) >= model.Room - 1 && int.Parse(flat.RoadNo) <= model.Room + 2)
-                                && (flat.Types == model.Type))).ToList();
+            AllFlats = AllFlats.Where(flat => (flat.AreaName == model.Area) && (flat.Types == model.Type)).ToList();
+            AllFlats = AllFlats.Where(flat => (flat.TotalCost >= (model.Price - 3000) && flat.TotalCost <= (model.Price + 2000))).ToList();
+            AllFlats = AllFlats.Where(flat => (flat.RoomNo >= (model.Room - 2) && flat.RoomNo <= (model.Room + 2))).ToList();
+
+
             ViewBag.Flats = AllFlats;
             ViewBag.Count = AllFlats.Count;
             return View("Index");
@@ -138,7 +139,7 @@ namespace FlatFinding.Controllers
                 {
                     FlatId = FlatId,
                     comment = comment,
-                    Date = DateTime.UtcNow,
+                    Date = DateTime.Now,
                     Name = user.Name,
                 };
 
