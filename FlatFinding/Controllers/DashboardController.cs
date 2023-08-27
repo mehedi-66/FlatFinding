@@ -35,6 +35,25 @@ namespace FlatFinding.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
+
+        public async Task<IActionResult> FlatSearchForAdmin(string Area = "", string Type = "", string FlatStatus = "")
+        {
+            // Admin Search page open 
+            try
+            {   
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost]
+        public IActionResult AdminUpdateFlatStatus(string StatusValue = "")
+        {
+            // 
+            return RedirectToAction("FlatSearchForAdmin");
+        }
         public async Task<IActionResult> UserProfile()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -166,17 +185,10 @@ namespace FlatFinding.Controllers
 
             return RedirectToAction("AdminDashboard");
         }
-        [HttpGet]
-        public IActionResult AdminSearchFlat()
-        {
-            return View();
-        }
 
-        [HttpGet]
-        public IActionResult AdminSearchResult()
-        {
-            return View();
-        }
+       
+
+       
 
         [HttpGet]
         public async Task<IActionResult> Notice()

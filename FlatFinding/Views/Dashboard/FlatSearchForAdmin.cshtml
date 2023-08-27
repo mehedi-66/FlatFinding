@@ -1,0 +1,93 @@
+﻿
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-around">
+                <h5>Search Flats</h5>
+                <h5>Number Of Flats: </h5>
+                @*<h5>Number Of User: @ViewBag.UserList.Count</h5>*@
+            </div>
+            <div class="card-body">
+                <form asp-controller="Dashboard" asp-action="FlatSearchForAdmin" class="p-2">
+
+                    <div class="row  mt-3">
+                        <div class="col-4 mb-3">
+                            <label class="mb-1"><b>Area</b></label>
+                            <select class="form-control" name="Area">
+                                <option value="All">All</option>
+                                <option value="Airport">Airport</option>
+                                <option value="Uttara"> Uttara</option>
+                                <option value="Mirpur"> Mirpur</option>
+                                <option value="Bonani"> Bonani</option>
+                                <option value="Gulsan"> Gulsan</option>
+                                <option value="Dhanmondi">Dhanmondi</option>
+                                <option value="Motijil"> Motijil</option>
+                            </select>
+                        </div>
+
+                        
+                        <div class="col-4 mb-3">
+                            <label class="mb-1"><b>Type of Flats </b></label>
+                            <select class="form-control" name="Type">
+                                <option value="All">All</option>
+                                <option value="Family">Family</option>
+                                <option value="Bachelor">Bachelor</option>
+                                <option value="Sublate">Sublate</option>
+
+                            </select>
+                        </div>
+
+                    <div class="col-4 mb-3">
+                        <label class="mb-1"> <b>Options </b></label>
+                        <select class="form-control" name="FlatStatus">
+                            <option value="All">All</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Pending">Pending</option>
+
+                        </select>
+                    </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3 mb-3" asp-controller="Dashboard" asp-action="FlatSearchForAdmin">Admin Search</button>
+                </form>
+                <table class="table">
+                    <tr>
+                        <th>Picture</th>
+                        <th>Flat Name</th>
+                        <th>Owner Name</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Cost</th>
+                        <th>Flat Status</th>
+                        <th>Action</th>
+                    </tr>
+                    @for(var i = 0; i <= 4; i++)
+                    {
+
+                        <tr>
+
+                            <th>Picture</th>
+                            <th>ABC</th>
+                            <th>Mehedi</th>
+                            <th>01704725466</th>
+                            <th>R: 20, H: 2, Road: 2 Uttara, Dhaka</th>
+                            <th>2000</th>
+                            <th>Pending</th>
+                            <td>
+
+                                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Accepted">Accepted</a>
+                                <a class="btn btn-secondary" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Pending">Pending</a>
+                                <a class="btn btn-danger" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Rejected">Rejected</a>
+                                <a class="btn btn-danger" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Delete">Delete</a>
+
+                            </td>
+                        </tr>
+
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
