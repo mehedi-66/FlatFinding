@@ -13,8 +13,11 @@
         <div class="card-body">
             <h5>Flat Info</h5>
 
-            <form asp-controller="Flat" asp-action="Update" class="p-2" method="post" enctype="multipart/form-data">
-
+            <form asp-controller="Flat" asp-action="Create" class="p-2" method="post" enctype="multipart/form-data">
+                @if (ViewBag.SameFlat == "Same")
+                {
+                    <div><p class="text-danger">Same flat Available</p></div>
+                }
                 <div class="row  mt-3">
                     <div class="col-6 mb-3">
                         <label asp-for="Name">Flat Name</label>
@@ -25,6 +28,11 @@
                         <label asp-for="HouseNo">House No</label>
                         <input asp-for="HouseNo" type="number" class="form-control" />
                         <span asp-validation-for="HouseNo" class="text-danger"></span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label asp-for="FlatNumber">Flat Number</label>
+                        <input asp-for="FlatNumber" type="number" class="form-control" />
+                        <span asp-validation-for="FlatNumber" class="text-danger"></span>
                     </div>
                      <div class="col-6 mb-3">
                         <label asp-for="RoadNo">Road No</label>
@@ -52,7 +60,7 @@
 
                     <div class="col-6 mb-3">
                         <label asp-for ="TotalCost"> Total Cost per month</label>
-                        <input asp-for="TotalCost" type="text" class="form-control" />
+                        <input asp-for="TotalCost" type="number" class="form-control" />
                         <span asp-validation-for="TotalCost" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">

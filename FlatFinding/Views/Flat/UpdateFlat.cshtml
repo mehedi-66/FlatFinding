@@ -14,7 +14,10 @@
             <h5>Flat Info Update</h5>
              
             <form asp-controller="Flat" asp-action="UpdateFlat" class="p-2" method="post" enctype="multipart/form-data">
-
+                @if (ViewBag.SameFlat == "Same")
+                {
+                    <div><p class="text-danger">Same flat Available</p></div>
+                }
                 <input hidden asp-for="FlatId" />
                 <div class="row  mt-3">
                     <div class="col-8">
@@ -31,6 +34,11 @@
                             <input asp-for="HouseNo" type="number" class="form-control" />
                             <span asp-validation-for="HouseNo" class="text-danger"></span>
                         </div>
+                            <div class="col-6 mb-3">
+                                <label asp-for="FlatNumber">Flat Number</label>
+                                <input asp-for="FlatNumber" type="number" class="form-control" />
+                                <span asp-validation-for="FlatNumber" class="text-danger"></span>
+                            </div>
                         <div class="col-6 mb-3">
                             <label asp-for="RoadNo">Road No</label>
                             <input asp-for="RoadNo" type="number" class="form-control" />

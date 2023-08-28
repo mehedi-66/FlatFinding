@@ -87,44 +87,64 @@ namespace FlatFinding.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Update(Flat model, IFormFile? file)
+        public async Task<IActionResult> Create(Flat model, IFormFile? file)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             model.OwnerId = userId;
 
+            // If search on flat and check same flat entry or not
             if (ModelState.IsValid)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (file != null)
-                {
-                    string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(wwwRootPath, @"img");
-                    var extension = Path.GetExtension(file.FileName);
+                var flatExist = await _context.Flats.Where(
+                f => f.FlatNumber == model.FlatNumber
+               && f.RoadNo== model.RoadNo && f.HouseNo== model.HouseNo
+               && f.sectorNo == model.sectorNo && f.AreaName== model.AreaName
+               ).ToListAsync();
 
-                    if (model.Picture != null)
-                    {
-                        var oldImagePath = Path.Combine(wwwRootPath, model.Picture.TrimStart('\\'));
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
-
-
-                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
-                    {
-                        file.CopyTo(fileStreams);
-                    }
-
-                    model.Picture = @"\img\" + fileName + extension;
-
-                };
-
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            if(flatExist.Count > 0)
+            {
+                ViewBag.SameFlat = "Same";
             }
-            return View(model);
+            else
+            {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    if (file != null)
+                    {
+                        string fileName = Guid.NewGuid().ToString();
+                        var uploads = Path.Combine(wwwRootPath, @"img");
+                        var extension = Path.GetExtension(file.FileName);
+
+                        if (model.Picture != null)
+                        {
+                            var oldImagePath = Path.Combine(wwwRootPath, model.Picture.TrimStart('\\'));
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+
+                        using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                        {
+                            file.CopyTo(fileStreams);
+                        }
+
+                        model.Picture = @"\img\" + fileName + extension;
+
+                    };
+
+                    model.FlatStatus = "Pending";
+
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("FlatOwnerProfile", "Dashboard");
+                }
+            
+
+           
+               
+            }
+            return View( model);
         }
 
         [HttpGet]
@@ -140,11 +160,23 @@ namespace FlatFinding.Controllers
         public IActionResult UpdateFlat(Flat model, IFormFile? file)
         {
            
-           var flat =  _context.Flats.AsNoTracking().FirstOrDefault(f => f.FlatId == model.FlatId);
-                
-                
-            
-           
+          
+
+            var flatExist =  _context.Flats.Where(
+            f => f.FlatNumber == model.FlatNumber
+           && f.RoadNo == model.RoadNo && f.HouseNo == model.HouseNo
+           && f.sectorNo == model.sectorNo && f.AreaName == model.AreaName
+           && f.Types == model.Types && f.Phone ==  model.Phone 
+           && f.Description == model.Description && f.Picture == model.Picture 
+           ).ToList();
+
+            if (flatExist.Count > 0)
+            {
+                ViewBag.SameFlat = "Same";
+            }
+            else
+            {
+                var flat = _context.Flats.AsNoTracking().FirstOrDefault(f => f.FlatId == model.FlatId);
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
                 {
@@ -167,17 +199,20 @@ namespace FlatFinding.Controllers
                         file.CopyTo(fileStreams);
                     }
 
-                flat.Picture = @"\img\" + fileName + extension;
+                    flat.Picture = @"\img\" + fileName + extension;
 
                 };
 
 
-            model.Picture = flat.Picture;
-            model.OwnerId= flat.OwnerId;
+                model.Picture = flat.Picture;
+                model.OwnerId = flat.OwnerId;
 
                 _context.Flats.Update(model);
-             _context.SaveChanges();
-            return RedirectToAction("UpdateFlat", new {id = model.FlatId});
+                _context.SaveChanges();
+                return RedirectToAction("UpdateFlat", new { id = model.FlatId });
+            }
+
+           
             
             return View(model);
         }
