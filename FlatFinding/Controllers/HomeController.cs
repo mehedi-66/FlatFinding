@@ -75,15 +75,22 @@ namespace FlatFinding.Controllers
         {
             if (!string.IsNullOrEmpty(email))
             {
-                Suscriber sub = new Suscriber()
+                var isEmail = _context.Suscribers.AsNoTracking().FirstOrDefault( f => f.email == email);
+                if(isEmail == null)
                 {
-                    email = email
-                };
-                _context.Suscribers.Add(sub);
-                await _context.SaveChangesAsync();
+                    Suscriber sub = new Suscriber()
+                    {
+                        email = email
+                    };
+                    _context.Suscribers.Add(sub);
+                    await _context.SaveChangesAsync();
+                    TempData["subscribe"] = "Email Successfully Save";
+                    return RedirectToAction("Index");
+                }
+                
             }
 
-
+            TempData["subscribe"] = "Email Not Save";
             return RedirectToAction("Index");
         }
 

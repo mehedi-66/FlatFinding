@@ -108,7 +108,7 @@
 
 
                         </div>
-                        <button class="btn btn-success mt-3 mb-3">Search Now</button>
+                        <button class="btn btn-success mt-3 mb-3" >Search Now</button>
                     </form>
                 </div>
             </div>
@@ -170,12 +170,27 @@
     <div class="RecomendedArea">
         <div class="card" style="background: #e1e1e1;">
             <div class="card-body">
+               
+    @if (TempData["subscribe"] != null)
+    {
+            <script type="text/javascript" >
+                window.onload = function () {
+                    Swal.fire(
+                        '',
+                       '@TempData["subscribe"]',
+                       ''
+                    )
+                };
+             </script>
+    }
+   
+       
                   <form asp-controller="home" asp-action="suscriber" method="post">
                       <div class="row">
                         <div class="col-4"></div>
                         <div class="col-4 mb-3">
                             <label for="email" class="mb-1"> <b>Subscribe with your Email</b></label>
-                            <input for="email" name="email" type="email" class="form-control" />
+                            <input for="email" name="email" type="email" class="form-control" autocomplete="off" />
                            
                         </div>
                         <div class="col-2 mt-4">
@@ -188,3 +203,6 @@
       
     </div>
 </div>
+
+
+   

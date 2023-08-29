@@ -137,6 +137,7 @@ namespace FlatFinding.Controllers
 
                     _context.Add(model);
                     await _context.SaveChangesAsync();
+                    TempData["flat"] = "Flat Save Successfully";
                     return RedirectToAction("FlatOwnerProfile", "Dashboard");
                 }
             
@@ -144,6 +145,7 @@ namespace FlatFinding.Controllers
            
                
             }
+            TempData["flat"] = "Flat Not Save";
             return View( model);
         }
 

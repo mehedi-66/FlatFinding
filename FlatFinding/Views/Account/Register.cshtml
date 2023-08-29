@@ -4,7 +4,18 @@
     ViewBag.Title = "User Registration";
 }
 
-
+ @if (TempData["user"] != null)
+    {
+            <script type="text/javascript" >
+                window.onload = function () {
+                    Swal.fire(
+                        '',
+                '@TempData["user"]',
+                       ''
+                    )
+                };
+             </script>
+    }
 
 <div class="card row w-50 p-3 m-auto">
     <h4>Account</h4>

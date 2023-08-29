@@ -95,15 +95,18 @@ namespace FlatFinding.Controllers
 
                 if(result.Succeeded)
                 {
+
                     user = await userManager.FindByIdAsync(user.Id);
                     
                     await userManager.AddToRoleAsync(user, role.Name);
 
                    await signInManager.SignInAsync(user, isPersistent: false);
+                    TempData["user"] = "User Save Successfuly";
                     return RedirectToAction("Index", "Home");
                 }
 
-                foreach(var error in result.Errors)
+                TempData["user"] = "User Not Save";
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
