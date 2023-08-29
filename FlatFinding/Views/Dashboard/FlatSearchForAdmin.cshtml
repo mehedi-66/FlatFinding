@@ -4,7 +4,7 @@
         <div class="card-header">
             <div class="d-flex justify-content-around">
                 <h5>Search Flats</h5>
-                <h5>Number Of Flats: </h5>
+                <h5>Number Of Flats: @ViewBag.Flats.Count </h5>
                 @*<h5>Number Of User: @ViewBag.UserList.Count</h5>*@
             </div>
             <div class="card-body">
@@ -54,31 +54,31 @@
                     <tr>
                         <th>Picture</th>
                         <th>Flat Name</th>
-                        <th>Owner Name</th>
                         <th>Phone Number</th>
                         <th>Address</th>
+                        <th>Type</th>
                         <th>Cost</th>
                         <th>Flat Status</th>
                         <th>Action</th>
                     </tr>
-                    @for(var i = 0; i <= 4; i++)
+                    @foreach (var item in ViewBag.Flats)
                     {
 
                         <tr>
 
-                            <th>Picture</th>
-                            <th>ABC</th>
-                            <th>Mehedi</th>
-                            <th>01704725466</th>
-                            <th>R: 20, H: 2, Road: 2 Uttara, Dhaka</th>
-                            <th>2000</th>
-                            <th>Pending</th>
+                            <td> <img src="@item.Picture" style="width: 50px; height: 45px" /></td>
+                            <td>@item.Name</td>
+                            <td>@item.Phone</td>
+                            <td>H: @item.HouseNo, R: @item.RoadNo, Sc: @item.sectorNo, @item.AreaName</td>
+                            <td>@item.Types</td>
+                            <td>@item.TotalCost tk/month</td>
+                            <td>@item.FlatStatus</td>
                             <td>
 
-                                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Accepted">Accepted</a>
-                                <a class="btn btn-secondary" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Pending">Pending</a>
-                                <a class="btn btn-danger" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Rejected">Rejected</a>
-                                <a class="btn btn-danger" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatus" asp-route-id="Delete">Delete</a>
+                                <a class="btn btn-primary mb-1" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatusAccepted" asp-route-id="@item.FlatId">Accepted</a>
+                                <a class="btn btn-secondary mb-1" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatusPending" asp-route-id="@item.FlatId">Pending</a>
+                                <a class="btn btn-danger mb-1" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatusRejected" asp-route-id="@item.FlatId">Rejected</a>
+                                <a class="btn btn-danger mb-1" asp-controller="Dashboard" asp-action="AdminUpdateFlatStatusDelete" asp-route-id="@item.FlatId">Delete</a>
 
                             </td>
                         </tr>

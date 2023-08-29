@@ -9,6 +9,7 @@ using System.Xml.Linq;
 
 namespace FlatFinding.Controllers
 {
+    
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -27,6 +28,7 @@ namespace FlatFinding.Controllers
         
 
         [HttpGet]
+       
         public IActionResult Register()
         {
             var roles = roleManager.Roles.Where(rol => rol.Name != "Admin").ToList();
@@ -36,6 +38,7 @@ namespace FlatFinding.Controllers
         }
 
         [HttpPost]
+       
         public async Task<IActionResult> Register(RegisterViewModel model, IFormFile? file)
         {
             var role = await roleManager.FindByIdAsync(model.RoleId);

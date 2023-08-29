@@ -25,7 +25,7 @@ namespace FlatFinding.Controllers
         public async Task<IActionResult> Index()
         {
             var AllFlats = await _context.Flats
-                .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
+                .Where(f => f.IsBooking == 0 && f.Available == "YES" && f.FlatStatus == "Accepted").ToListAsync();
             ViewBag.Flats = AllFlats;
             ViewBag.Count = AllFlats.Count;
             return View();
@@ -34,7 +34,7 @@ namespace FlatFinding.Controllers
         public async Task<IActionResult> AreaWise(string id)
         {
             var AllFlats = await _context.Flats 
-                .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
+                .Where(f => f.IsBooking == 0 && f.Available == "YES" && f.FlatStatus == "Accepted").ToListAsync();
 
             AllFlats = AllFlats.Where(flat => flat.AreaName == id).ToList();
 
@@ -46,7 +46,7 @@ namespace FlatFinding.Controllers
         public async Task<IActionResult> Search(SearchViewModel model)
         {
             var AllFlats = await _context.Flats
-                .Where(f => f.IsBooking == 0 && f.Available == "YES").ToListAsync();
+                .Where(f => f.IsBooking == 0 && f.Available == "YES" && f.FlatStatus == "Accepted").ToListAsync();
 
             AllFlats = AllFlats.Where(flat => (flat.AreaName == model.Area) && (flat.Types == model.Type)).ToList();
             AllFlats = AllFlats.Where(flat => (flat.TotalCost >= (model.Price - 3000) && flat.TotalCost <= (model.Price + 2000))).ToList();
@@ -167,7 +167,7 @@ namespace FlatFinding.Controllers
            && f.RoadNo == model.RoadNo && f.HouseNo == model.HouseNo
            && f.sectorNo == model.sectorNo && f.AreaName == model.AreaName
            && f.Types == model.Types && f.Phone ==  model.Phone 
-           && f.Description == model.Description && f.Picture == model.Picture 
+           && f.Description == model.Description && f.IsBooking == 0  
            ).ToList();
 
             if (flatExist.Count > 0)

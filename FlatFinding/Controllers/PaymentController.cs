@@ -34,6 +34,9 @@ namespace FlatFinding.Controllers
         }
         public async Task<IActionResult> Index(int? id)
         {
+            /*var UserId = _userManager.GetUserId(HttpContext.User);
+            HttpContext.Session.SetString("LoggedIn", UserId);*/
+
             var FlatDetail = await _context.Flats
                 .FirstOrDefaultAsync(m => m.FlatId == id);
             if (FlatDetail == null)
@@ -42,6 +45,7 @@ namespace FlatFinding.Controllers
             ViewBag.Cost = FlatDetail.TotalCost;
             ViewBag.FlatId = id;
             var baseUrl = Request.Scheme + "://" + Request.Host;
+           /* var baseUrl = "https://localhost:7168/";*/
 
             // CREATING LIST OF POST DATA
             NameValueCollection PostData = new NameValueCollection();
@@ -49,8 +53,8 @@ namespace FlatFinding.Controllers
             PostData.Add("total_amount", $"{FlatDetail.TotalCost}");
             PostData.Add("tran_id", "TESTASPNET1234");
             PostData.Add("success_url", baseUrl + "/Payment/PaymentGetWay?id="+ id);
-            PostData.Add("fail_url", baseUrl + "/Payment/CheckoutFail");
-            PostData.Add("cancel_url", baseUrl + "/Payment/CheckoutCancel");
+            PostData.Add("fail_url", baseUrl + "/Flat/FlatDetails?id=" + id);
+            PostData.Add("cancel_url", baseUrl + "/Flat/FlatDetails?id=" + id);
 
             PostData.Add("version", "3.00");
             PostData.Add("cus_name", "ABC XY");
@@ -96,6 +100,7 @@ namespace FlatFinding.Controllers
         public async Task<IActionResult> PaymentGetWay(int id)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
+         /*   var userId = HttpContext.Session.GetString("LoggedIn");*/
 
 
 
@@ -104,6 +109,9 @@ namespace FlatFinding.Controllers
                 .FirstOrDefaultAsync(m => m.FlatId == id);
             if (FlatDetail == null)
                 return NotFound();
+
+            if (FlatDetail.IsBooking == 1)
+                return RedirectToAction("UserProfile", "Dashboard");
 
             FlatBooked flatBooked = new FlatBooked()
             {
@@ -127,7 +135,7 @@ namespace FlatFinding.Controllers
 
 
             // Invoice Report Generate
-            string Header = "";
+           /* string Header = "";
             var bookedList = _context.FlatBookeds.Where(b => b.FlatId == id).ToList();
             var flatList = _context.Flats.ToList();
             var userList = _userManager.Users;
@@ -152,8 +160,10 @@ namespace FlatFinding.Controllers
             joinedData = query.FirstOrDefault();
 
             // Redicent to User Profile and Report Generate Pdf 
-            return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");
-           
+            return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");*/
+
+            return RedirectToAction("UserProfile", "Dashboard");
+
         }
         public byte[] GetPDFFileForInvoice(JoinedFlatBookingData joinedData, string Header)
         {

@@ -63,6 +63,7 @@
                     <th>Cost</th>
                     <th>Rooms</th>
                     <th>Avilable</th>
+                    <th>Flat Status</th>
                     <th>Action</th>
                 </tr>
                 @if (ViewBag.Flats.Count != 0)
@@ -78,6 +79,7 @@
                             <td>@item.TotalCost tk/month</td>
                             <td>@item.RoomNo</td>
                             <td>@item.Available</td>
+                            <td>@item.FlatStatus</td>
                             <td>
                                 <a class="btn btn-primary" asp-controller="Flat" asp-action="UpdateFlat" asp-route-id="@item.FlatId">Update</a>
                                 <a class="btn btn-danger" asp-controller="Flat" asp-action="DeleteFlat" asp-route-id="@item.FlatId">Delete</a>
@@ -132,9 +134,10 @@
                             <td>Paid</td>
                             <td>@flat.Date</td>
                             <td>
-
+                                <div>
+                                <a class="btn btn-danger mb-1" asp-controller="Dashboard" asp-action="FlatBookingCancel" asp-route-id="@flat.FlatBookedId" target="_blank">Cancel</a>
                                 <a class="btn btn-primary" asp-controller="Dashboard" asp-action="BookingReport" asp-route-id="@flat.FlatBookedId" target="_blank">Print Details</a>
-
+                                </div>
                             </td>
                         </tr>
                     }

@@ -92,8 +92,11 @@
                             <td>Paid</td>
                             <td>@flat.Date</td>
                             <td>
-
-                                <a class="btn btn-primary" asp-controller="Dashboard" asp-action="BookingReport" target="_blank" asp-route-id="@flat.FlatBookedId">Print Details</a>
+                                <div>
+                                    <a class="btn btn-danger mb-1" asp-controller="Dashboard" asp-action="FlatBookingCancel" asp-route-id="@flat.FlatBookedId">Cancel</a>
+                                    <a class="btn btn-primary" asp-controller="Dashboard" asp-action="BookingReport" target="_blank" asp-route-id="@flat.FlatBookedId">Print Details</a>
+                                </div>
+                               
 
                             </td>
                         </tr>

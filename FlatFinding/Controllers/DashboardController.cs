@@ -36,11 +36,104 @@ namespace FlatFinding.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+
+        public IActionResult FlatBookingCancel(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    var flatBooked = _context.FlatBookeds.FirstOrDefault(f => f.FlatBookedId == id);
+                    if (flatBooked != null)
+                    {
+                        var flat = _context.Flats.FirstOrDefault(f => f.FlatId == flatBooked.FlatId);
+                        if (flat != null)
+                        {
+                            flat.IsBooking = 0;
+                            _context.Flats.Update(flat);
+                            _context.SaveChanges();
+
+                            _context.FlatBookeds.Remove(flatBooked);
+                            _context.SaveChanges();
+
+                           
+                        }
+                    }
+                   
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            catch {
+                return View("Error");
+            }
+
+          
+        }
+
         public async Task<IActionResult> FlatSearchForAdmin(string Area = "", string Type = "", string FlatStatus = "")
         {
             // Admin Search page open 
             try
-            {   
+            {
+                List<Flat> flats = new List<Flat>();
+
+               
+               // All   All   All
+               // Area Fix start 
+               if(Area == "All" && Type ==  "All" && FlatStatus != "All")
+               {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.FlatStatus == FlatStatus).ToListAsync();
+
+                }
+               else if(Area == "All" && Type != "All" && FlatStatus == "All")
+               {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Types == Type).ToListAsync();
+                }
+               else if(Area == "All" && Type != "All" && FlatStatus != "All")
+               {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Types == Type && f.FlatStatus == FlatStatus).ToListAsync();
+               }
+                // Area fix end
+                // Type Fix start 
+                if (Area != "All" && Type == "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area).ToListAsync();
+
+                }
+                else if (Area == "All" && Type == "All" && FlatStatus != "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.FlatStatus == FlatStatus).ToListAsync();
+                }
+                else if (Area != "All" && Type == "All" && FlatStatus != "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area && f.FlatStatus == FlatStatus).ToListAsync();
+                }
+                // Type fix end
+                // Status Fix start 
+                if (Area != "All" && Type == "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area).ToListAsync();
+
+                }
+                else if (Area == "All" && Type != "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Types == Type).ToListAsync();
+                }
+                else if (Area != "All" && Type != "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area && f.Types == Type).ToListAsync();
+                }
+                // Status fix end
+
+
+
+                if ((Area == "" || Area == "All") && (Type == "" || Type == "All") && (FlatStatus == "" || FlatStatus == "All"))
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0).ToListAsync();
+                }
+               
+                
+                ViewBag.Flats = flats;
                 return View();
             }
             catch (Exception ex)
@@ -48,10 +141,51 @@ namespace FlatFinding.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
-        public IActionResult AdminUpdateFlatStatus(string StatusValue = "")
+
+        private int UpdateStatusofFlat(string status, int id)
         {
-            // 
+            var flat = _context.Flats.FirstOrDefault(f => f.FlatId == id);
+            if (flat != null)
+            {   
+                flat.FlatStatus = status;
+                _context.Flats.Update(flat);
+                _context.SaveChanges();
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        [HttpGet]
+        public IActionResult AdminUpdateFlatStatusAccepted(int id)
+        {
+            // Accepted 
+            UpdateStatusofFlat("Accepted", id);
+            // success 1 and fail 0
+            return RedirectToAction("FlatSearchForAdmin");
+        }  
+        public IActionResult AdminUpdateFlatStatusPending(int id)
+        {
+            // Pending
+            UpdateStatusofFlat("Pending", id);
+            return RedirectToAction("FlatSearchForAdmin");
+        } 
+        public IActionResult AdminUpdateFlatStatusRejected(int id)
+        {
+            // Rejected 
+            UpdateStatusofFlat("Rejected", id);
+            return RedirectToAction("FlatSearchForAdmin");
+        }
+        public IActionResult AdminUpdateFlatStatusDelete(int id)
+        {
+            // Delete 
+            var flat = (_context.Flats.FirstOrDefault(f=>f.FlatId == id));
+            if(flat != null)
+            {
+                _context.Flats.Remove(flat);
+                _context.SaveChanges();
+            }
             return RedirectToAction("FlatSearchForAdmin");
         }
         public async Task<IActionResult> UserProfile()
