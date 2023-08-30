@@ -34,8 +34,8 @@ namespace FlatFinding.Controllers
         }
         public async Task<IActionResult> Index(int? id)
         {
-            /*var UserId = _userManager.GetUserId(HttpContext.User);
-            HttpContext.Session.SetString("LoggedIn", UserId);*/
+            var UserId = _userManager.GetUserId(HttpContext.User);
+            HttpContext.Session.SetString("LoggedIn", UserId);
 
             var FlatDetail = await _context.Flats
                 .FirstOrDefaultAsync(m => m.FlatId == id);
@@ -100,67 +100,78 @@ namespace FlatFinding.Controllers
         public async Task<IActionResult> PaymentGetWay(int id)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-         /*   var userId = HttpContext.Session.GetString("LoggedIn");*/
+            var userId2 = HttpContext.Session.GetString("LoggedIn");
 
-
-
-
-            var FlatDetail = await _context.Flats
-                .FirstOrDefaultAsync(m => m.FlatId == id);
-            if (FlatDetail == null)
-                return NotFound();
-
-            if (FlatDetail.IsBooking == 1)
-                return RedirectToAction("UserProfile", "Dashboard");
-
-            FlatBooked flatBooked = new FlatBooked()
+            if(userId == userId2)
             {
-                FlatId = id,
-                OwnerId = FlatDetail.OwnerId,
-                UserId = userId,
-                FlatCost = FlatDetail.TotalCost,
-                FlatProfit = (FlatDetail.TotalCost / 1000) + 20,
-                BookingDate = DateTime.Now,
-                PaymentId = new Random().Next(int.MinValue, int.MaxValue).ToString(),
-            };
+                var FlatDetail = await _context.Flats
+               .FirstOrDefaultAsync(m => m.FlatId == id);
+                if (FlatDetail == null)
+                    return NotFound();
 
-            // Save Booked 
-            _context.Add(flatBooked);
-            await _context.SaveChangesAsync();
+                if (FlatDetail.IsBooking == 1)
+                    return RedirectToAction("UserProfile", "Dashboard");
 
-            // Update Flat Info
-            FlatDetail.IsBooking = 1;
-            _context.Update(FlatDetail);
-            await _context.SaveChangesAsync();
+                FlatBooked flatBooked = new FlatBooked()
+                {
+                    FlatId = id,
+                    OwnerId = FlatDetail.OwnerId,
+                    UserId = userId,
+                    FlatCost = FlatDetail.TotalCost,
+                    FlatProfit = (FlatDetail.TotalCost / 1000) + 20,
+                    BookingDate = DateTime.Now,
+                    PaymentId = new Random().Next(int.MinValue, int.MaxValue).ToString(),
+                };
+
+                // Save Booked 
+                _context.Add(flatBooked);
+                await _context.SaveChangesAsync();
+
+                // Update Flat Info
+                FlatDetail.IsBooking = 1;
+                _context.Update(FlatDetail);
+                await _context.SaveChangesAsync();
+
+
+            }
+            else
+            {
+                // Refund payment 
+                return RedirectToAction("FlatDetails", "Flat", new { id = id });
+            }
+
+
+
+
 
 
             // Invoice Report Generate
-           /* string Header = "";
-            var bookedList = _context.FlatBookeds.Where(b => b.FlatId == id).ToList();
-            var flatList = _context.Flats.ToList();
-            var userList = _userManager.Users;
-            JoinedFlatBookingData joinedData = new JoinedFlatBookingData();
+            /* string Header = "";
+             var bookedList = _context.FlatBookeds.Where(b => b.FlatId == id).ToList();
+             var flatList = _context.Flats.ToList();
+             var userList = _userManager.Users;
+             JoinedFlatBookingData joinedData = new JoinedFlatBookingData();
 
-            var query = from booking in bookedList
-                        join flat in flatList on booking.FlatId equals flat.FlatId
-                        join user in userList on booking.OwnerId equals user.Id
-                        join user1 in userList on booking.UserId equals user1.Id
-                        select new JoinedFlatBookingData
-                        {
-                            FlatName = flat.Name,
-                            Address = $"H: {flat.HouseNo} R: {flat.RoadNo} S: {flat.sectorNo}, {flat.AreaName}",
-                            Type = flat.Types.ToString(),
-                            OwnerName = user.Name,
-                            OwnerPhone = user.PhoneNumber,
-                            BuyerName = user1.Name,
-                            BuyerPhone= user1.PhoneNumber,
-                            BookingDate = booking.BookingDate,
-                            FlatCost = booking.FlatCost,
-                        };
-            joinedData = query.FirstOrDefault();
+             var query = from booking in bookedList
+                         join flat in flatList on booking.FlatId equals flat.FlatId
+                         join user in userList on booking.OwnerId equals user.Id
+                         join user1 in userList on booking.UserId equals user1.Id
+                         select new JoinedFlatBookingData
+                         {
+                             FlatName = flat.Name,
+                             Address = $"H: {flat.HouseNo} R: {flat.RoadNo} S: {flat.sectorNo}, {flat.AreaName}",
+                             Type = flat.Types.ToString(),
+                             OwnerName = user.Name,
+                             OwnerPhone = user.PhoneNumber,
+                             BuyerName = user1.Name,
+                             BuyerPhone= user1.PhoneNumber,
+                             BookingDate = booking.BookingDate,
+                             FlatCost = booking.FlatCost,
+                         };
+             joinedData = query.FirstOrDefault();
 
-            // Redicent to User Profile and Report Generate Pdf 
-            return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");*/
+             // Redicent to User Profile and Report Generate Pdf 
+             return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");*/
 
             return RedirectToAction("UserProfile", "Dashboard");
 
