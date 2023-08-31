@@ -19,6 +19,7 @@ namespace FlatFinding.Controllers
     [Authorize(Roles = "User")]
     public class PaymentController : Controller
     {
+       
         private IConverter _converter;
         private readonly FlatFindingContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -31,6 +32,11 @@ namespace FlatFinding.Controllers
             _converter = converter;
             _webHostEnvironment = webHostEnvironment;
 
+        }
+        public async Task<IActionResult> PoliceVerify(int? id)
+        {
+            ViewBag.Id = id;
+            return View();
         }
         public async Task<IActionResult> Index(int? id)
         {

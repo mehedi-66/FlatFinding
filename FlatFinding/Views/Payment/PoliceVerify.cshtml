@@ -1,0 +1,30 @@
+﻿<div class="RecomendedArea mt-5 mb-3">
+    @*<h>Choose your Payment Method</h>*@
+
+    <div class="card paymentGetWay mb-3 mt-3">
+
+        <div class="card-body d-flex flex-wrap justify-content-center">
+          @*  <h6>Paid Amount: @ViewBag.Cost</h6>*@
+            <form asp-controller="Payment" asp-action="PaymentGetWay" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="row">
+                    HI I am here 
+                    <input hidden name="id" value="@ViewBag.Id" />
+                   @* <input asp-for="FlatId" value="@ViewBag.FlatId" hidden class="form-control" />
+                    <div class="form-group col-12 mb-3 mb-3">
+                        <label asp-for=""></label>
+                        <input asp-for="" class="form-control" />
+                        <span asp-validation-for="AccountNo" class="text-danger"></span>
+                    </div>*@
+                    <button type="submit" class="btn btn-primary mt-3" asp-controller="Payment" asp-action="Index">Submit</button>
+                </div>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+</div>
