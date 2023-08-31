@@ -100,6 +100,7 @@ namespace FlatFinding.Controllers
                             OwnerName = user.Name,
                             BuyerName = user1.Name,
                             BookingDate = booking.BookingDate,
+                            BookingCancel = booking.BookingCancel,
                             FlatCost = booking.FlatCost,
                             FlatProfit = booking.FlatProfit
                         };
@@ -153,6 +154,7 @@ namespace FlatFinding.Controllers
                             OwnerName = user.Name,
                             BuyerName = user1.Name,
                             BookingDate = booking.BookingDate,
+                            BookingCancel = booking.BookingCancel,
                             FlatCost = booking.FlatCost,
                             FlatProfit = booking.FlatProfit
                         };
@@ -172,7 +174,7 @@ namespace FlatFinding.Controllers
             var globalSettings = new GlobalSettings
             {
                 ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
+                Orientation = Orientation.Landscape,
                 PaperSize = PaperKind.A4,
                 Margins = new MarginSettings { Top = 10 },
                 DocumentTitle = "PDF Report"

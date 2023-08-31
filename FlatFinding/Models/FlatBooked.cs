@@ -18,6 +18,9 @@ namespace FlatFinding.Models
 
         public DateTime BookingDate { get; set; } = DateTime.Now;
 
+        public int IsDelete { get; set; }
+        public DateTime? BookingCancel { get; set; }
+
 
     }
 }

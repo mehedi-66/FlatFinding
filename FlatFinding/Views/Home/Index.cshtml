@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="col-6 mb-3">
-                                <label asp-for="Price" class="mb-1"> <b>Price Range -2000 to +20000 </b></label>
+                                <label asp-for="Price" class="mb-1"> <b>Price Range -2000 to +2000 </b></label>
                                 <input asp-for="Price" type="number" class="form-control" />
                             </div>
 
@@ -151,6 +151,7 @@
                     <img class="card-img-top" style="overflow: hidden" src="@item.Picture" alt="Card image cap">
                     <div class="card-body">
                        <div>
+                            <small class="dec_flat"><b>Flat Name:</b> @item.Name</small> <br />
                             <small class="dec_flat"><b>Address:</b> H: @item.HouseNo, R: @item.RoadNo, Sc: @item.sectorNo, @item.AreaName </small> <br />
                             <small class="dec_flat "><b> Price:</b> @item.TotalCost tk/month </small>
                             <small class="dec_flat mx-3"><b>  Type:</b>@item.Types</small> <br />

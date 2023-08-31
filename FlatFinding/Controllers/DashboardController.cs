@@ -46,14 +46,17 @@ namespace FlatFinding.Controllers
                     var flatBooked = _context.FlatBookeds.FirstOrDefault(f => f.FlatBookedId == id);
                     if (flatBooked != null)
                     {
-                        var flat = _context.Flats.FirstOrDefault(f => f.FlatId == flatBooked.FlatId);
+                        var flat = _context.Flats.AsNoTracking().FirstOrDefault(f => f.FlatId == flatBooked.FlatId);
                         if (flat != null)
                         {
+                            flat.FlatId = 0;
                             flat.IsBooking = 0;
-                            _context.Flats.Update(flat);
+                            _context.Flats.Add(flat);
                             _context.SaveChanges();
 
-                            _context.FlatBookeds.Remove(flatBooked);
+                            flatBooked.IsDelete = 1;
+                            flatBooked.BookingCancel = DateTime.Now;
+                            _context.FlatBookeds.Update(flatBooked);
                             _context.SaveChanges();
 
                            

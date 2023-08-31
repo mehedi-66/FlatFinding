@@ -38,11 +38,13 @@ namespace FlatFinding.ReportTemplate
                                     <tr>
                                         <th>Sl</th>
                                         <th>Flat Name</th>
+                                        <th>Flat Address</th>
                                         <th>Owner</th>
                                         <th>Buyer</th>
                                         <th>Flat Cost</th>
                                         <th>Profit</th>
                                         <th>booking Date</th>
+                                        <th>booking Cancel</th>
                                     </tr>""", TotalBooking, TotalSpend, TotalProfit);
                                   
             int cnt = 0;
@@ -57,11 +59,13 @@ namespace FlatFinding.ReportTemplate
                                     <td>{4}</td>
                                     <td>{5}</td>
                                     <td>{6}</td>
+                                    <td>{7}</td>
+                                    <td>{8}</td>
                                    
                                     
-                                  </tr>",cnt, emp.FlatName, 
+                                  </tr>",cnt, emp.FlatName, emp.Address,
                                            emp.OwnerName, emp.BuyerName, 
-                                           emp.FlatCost, emp.FlatProfit, emp.BookingDate?.ToString("dd-MM-yyyy"));
+                                           emp.FlatCost, emp.FlatProfit, emp.BookingDate?.ToString("dd-MM-yyyy"), emp.BookingCancel?.ToString("dd-MM-yyyy"));
             }
             sb.Append(@"
                                 </table>

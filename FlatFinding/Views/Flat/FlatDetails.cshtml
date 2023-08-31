@@ -4,12 +4,28 @@
     var flatInfo = ViewBag.FlatDetail;
 }
 <div class="RecomendedArea mt-5 mb-3">
+    @if (TempData["flat"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                Swal.fire(
+                    '',
+                    '@TempData["flat"]',
+                    ''
+                )
+            };
+        </script>
+    }
     <h5>Confirm Your Flat</h5>
     <small>Best Flat with affordable price</small>
     <div class="card flatDetils mb-3 mt-3">
 
         <img class="card-img-top" style="overflow: hidden" src="@flatInfo.Picture" alt="Card image cap">
                <div class="card-body mb-3">
+            <p>
+                <b> Name of Flat: </b> <br />
+                @flatInfo.Name
+            </p>
                    <p><b> Description: </b> <br/>
                 @flatInfo.Description
                    </p>

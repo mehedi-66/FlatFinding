@@ -58,7 +58,7 @@ namespace FlatFinding.Controllers
             return View("Index");
         }
 
-        public async Task<IActionResult> FlatDetails(int? id)
+        public async Task<IActionResult> FlatDetails(int? id, int IsNotBooking = 0)
         {
             var FlatDetail = await _context.Flats
                 .FirstOrDefaultAsync(m => m.FlatId == id);
@@ -78,6 +78,10 @@ namespace FlatFinding.Controllers
             ViewBag.FlatDetail = FlatDetail;
             ViewBag.Comments = comments;
 
+            if(IsNotBooking == 1)
+            {
+                TempData["flat"] = "You can Not Booked more then 5 Flats";
+            }
             return View();
         }
         [HttpGet]
