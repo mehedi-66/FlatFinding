@@ -12,5 +12,7 @@ namespace FlatFinding.ViewModel
         public int Room { get; set; }
         public object? UserName { get; set; }
         public DateTime Date { get; set; }
+
+       
     }
 }

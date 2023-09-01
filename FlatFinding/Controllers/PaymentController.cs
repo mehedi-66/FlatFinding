@@ -7,6 +7,7 @@ using FlatFinding.ReportTemplate;
 using FlatFinding.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace FlatFinding.Controllers
         private readonly FlatFindingContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private FlatBooked tempFlatBooking;
 
         public PaymentController(IConverter converter, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, FlatFindingContext context)
         {
@@ -40,6 +42,7 @@ namespace FlatFinding.Controllers
         }
         public async Task<IActionResult> Index(FlatBooked model, IFormFile? file)
         {
+
             int id = model.FlatId;
             var UserId = _userManager.GetUserId(HttpContext.User);
             HttpContext.Session.SetString("LoggedIn", UserId);
@@ -47,6 +50,41 @@ namespace FlatFinding.Controllers
             var flatBookingByuser = await _context.FlatBookeds.Where(f => f.IsDelete == 0 && f.UserId == UserId).ToListAsync();
             if(flatBookingByuser.Count < 5)
             {
+                // picture data save 
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"img");
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if (model.PictureOfPerson != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, model.PictureOfPerson.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+
+                    model.PictureOfPerson = @"\img\" + fileName + extension;
+
+                };
+
+                model.PictureOfPerson = "Pending";
+
+                // Save model to local storage 
+
+                 _context.FlatBookeds.Add(model);
+                await _context.SaveChangesAsync();
+
+                int bookingId = model.FlatBookedId;
 
                 var FlatDetail = await _context.Flats
                     .FirstOrDefaultAsync(m => m.FlatId == id);
@@ -63,7 +101,7 @@ namespace FlatFinding.Controllers
 
                 PostData.Add("total_amount", $"{FlatDetail.TotalCost}");
                 PostData.Add("tran_id", "TESTASPNET1234");
-                PostData.Add("success_url", baseUrl + "/Payment/PaymentGetWay?id=" + id);
+                PostData.Add("success_url", baseUrl + "/Payment/PaymentGetWay?id=" + bookingId);
                 PostData.Add("fail_url", baseUrl + "/Flat/FlatDetails?id=" + id);
                 PostData.Add("cancel_url", baseUrl + "/Flat/FlatDetails?id=" + id);
 
@@ -110,7 +148,6 @@ namespace FlatFinding.Controllers
             {
                 return RedirectToAction("FlatDetails", "Flat", new { id = id, IsNotBooking = 1 }) ;
             }
-            
 
         }
 
@@ -120,29 +157,43 @@ namespace FlatFinding.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
             var userId2 = HttpContext.Session.GetString("LoggedIn");
 
+            var bookingFlat = await _context.FlatBookeds.FirstOrDefaultAsync(f => f.FlatBookedId == id);
+
             if(userId == userId2)
             {
+                
                 var FlatDetail = await _context.Flats
-               .FirstOrDefaultAsync(m => m.FlatId == id);
+               .FirstOrDefaultAsync(m => m.FlatId == bookingFlat.FlatId);
                 if (FlatDetail == null)
                     return NotFound();
 
                 if (FlatDetail.IsBooking == 1)
                     return RedirectToAction("UserProfile", "Dashboard");
 
-                FlatBooked flatBooked = new FlatBooked()
-                {
-                    FlatId = id,
-                    OwnerId = FlatDetail.OwnerId,
-                    UserId = userId,
-                    FlatCost = FlatDetail.TotalCost,
-                    FlatProfit = (FlatDetail.TotalCost / 1000) + 20,
-                    BookingDate = DateTime.Now,
-                    PaymentId = new Random().Next(int.MinValue, int.MaxValue).ToString(),
-                };
+                /* FlatBooked flatBooked = new FlatBooked()
+                 {
+                     FlatId = id,
+                     OwnerId = FlatDetail.OwnerId,
+                     UserId = userId,
+                     FlatCost = FlatDetail.TotalCost,
+                     FlatProfit = (FlatDetail.TotalCost / 1000) + 20,
+                     BookingDate = DateTime.Now,
+                     PaymentId = new Random().Next(int.MinValue, int.MaxValue).ToString(),
+
+                     // police varification data
+
+
+                 };*/
+                bookingFlat.IsDelete = 0;
+                bookingFlat.OwnerId = FlatDetail.OwnerId;
+                bookingFlat.UserId = userId;
+                bookingFlat.FlatCost = FlatDetail.TotalCost;
+                bookingFlat.FlatProfit = (FlatDetail.TotalCost / 1000) + 20;
+                bookingFlat.BookingDate = DateTime.Now;
+                bookingFlat.PaymentId = new Random().Next(int.MinValue, int.MaxValue).ToString();
 
                 // Save Booked 
-                _context.Add(flatBooked);
+                _context.Update(bookingFlat);
                 await _context.SaveChangesAsync();
 
                 // Update Flat Info
@@ -155,7 +206,9 @@ namespace FlatFinding.Controllers
             else
             {
                 // Refund payment 
-                return RedirectToAction("FlatDetails", "Flat", new { id = id });
+                _context.Remove(bookingFlat);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("FlatDetails", "Flat", new { id = bookingFlat.FlatId });
             }
 
 

@@ -14,6 +14,8 @@ using MailKit.Net.Smtp;
 using DinkToPdf;
 using FlatFinding.ReportTemplate;
 using DinkToPdf.Contracts;
+using Org.BouncyCastle.Asn1.X509;
+using System.Drawing;
 
 namespace FlatFinding.Controllers
 {
@@ -199,7 +201,7 @@ namespace FlatFinding.Controllers
             List<BookingListViewModel> BookedFlat = (
                             from flatBooked in _context.FlatBookeds
                             join flat in _context.Flats on flatBooked.FlatId equals flat.FlatId
-                            where flatBooked.UserId == userId
+                            where flatBooked.UserId == userId && flatBooked.IsDelete == 0
                             select new BookingListViewModel
                             {
                                 FlatBookedId = flatBooked.FlatBookedId,
@@ -208,7 +210,8 @@ namespace FlatFinding.Controllers
                                 Cost = flat.TotalCost,
                                 Room = int.Parse(flat.RoadNo),
                                 Type = flat.Types,
-                                Date = flatBooked.BookingDate
+                                Date = flatBooked.BookingDate,
+                              
                             }
                         ).ToList();
 
@@ -242,7 +245,7 @@ namespace FlatFinding.Controllers
             var BookedFlats = (
                  from flatBooked in _context.FlatBookeds
                  join flat in _context.Flats on flatBooked.FlatId equals flat.FlatId
-                 where flatBooked.OwnerId == userId
+                 where flatBooked.OwnerId == userId && flatBooked.IsDelete == 0
                  select new
                  {
                      Flat = flat,
@@ -262,7 +265,8 @@ namespace FlatFinding.Controllers
                     Address = user12.Address,
                     Type = user12.PhoneNumber,
                     Cost = item.Flat.TotalCost,
-                    Date = item.FlatBooked.BookingDate
+                    Date = item.FlatBooked.BookingDate,
+                   
                 });
                 // Now you can use the bookingViewModel or add it to a list if needed
             }
@@ -452,6 +456,20 @@ namespace FlatFinding.Controllers
                             BuyerPhone = user1.PhoneNumber,
                             BookingDate = booking.BookingDate,
                             FlatCost = booking.FlatCost,
+                            NameOfWhoLive = booking.NameOfWhoLive,
+                            FatherName = booking.FatherName,
+                            DateOfBirth = booking.DateOfBirth,
+                            ParmanetAddress = booking.ParmanetAddress,
+                            MaritalStatus = booking.MaritalStatus,
+                            Religion = booking.Religion,
+                            EmailId = booking.EmailId,
+                            NID = booking.NID,
+                            Person1Name = booking.Person1Name,
+                            Person1Phone = booking.Person1Phone,
+                            Person2Name = booking.Person2Name,
+                            Person2Phone = booking.Person2Phone,
+                            ResoneOfLeveingHouse = booking.ResoneOfLeveingHouse,
+                            Condition = booking.Condition
                         };
             joinedData = query.FirstOrDefault();
             return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");
