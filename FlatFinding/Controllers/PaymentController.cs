@@ -38,8 +38,9 @@ namespace FlatFinding.Controllers
             ViewBag.Id = id;
             return View();
         }
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(FlatBooked model, IFormFile? file)
         {
+            int id = model.FlatId;
             var UserId = _userManager.GetUserId(HttpContext.User);
             HttpContext.Session.SetString("LoggedIn", UserId);
 
