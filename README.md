@@ -4,7 +4,7 @@
 <h4>Home Page</h4>
 <img src="img/home.png">
 <br/>
-<h4>Register Page</h4>
+<h4>Registration Page</h4>
 <img src="img/reg.png">
 <br/>
 <h4>Login Page</h4>
@@ -39,4 +39,4 @@
 <img src="img/flatTable.png">
 
 <br/>
-<h2>Thank Your!</>
+<h2>Thank You!</>
