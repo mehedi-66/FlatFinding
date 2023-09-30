@@ -14,18 +14,21 @@
                         <th>Phone</th>
                         <th>Action</th>
                     </tr>
-                    @for (int i = 0; i <= 5; i++)
+                    @for (int i = 0; i <= 4; i++)
                     {
 
                         <tr>
                             <td>ABC</td>
                             <td>Rahim</td>
+                            
                             <td>H:50,R:30 Uttara </td>
 
                             <td>01705474847</td>
                             <td>
 
-                                <a class="btn btn-primary" asp-controller="" asp-action=""> Update</a>
+                                <a class="btn btn-primary" asp-controller="" asp-action="">Accepted</a>
+                                <a class="btn btn-secondary" asp-controller="" asp-action="">Pending</a>
+                                <a class="btn btn-danger" asp-controller="" asp-action="">Rejected</a>
                                 <a class="btn btn-danger" asp-controller="" asp-action="">Delete</a>
 
                             </td>

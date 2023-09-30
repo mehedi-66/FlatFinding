@@ -178,6 +178,12 @@ namespace FlatFinding.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FlatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FlatStatus")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HouseNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -27,7 +27,7 @@
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-yellow order-card">
                 <div class="card-block">
-                    <h5 class="mb-2 text-center">Number of Flats</h5>
+                    <h5 class="mb-2 text-center">Available Flats</h5>
                     <h5 class="text-center">@ViewBag.AllFlats </h5>
                 </div>
             </div>
@@ -80,27 +80,27 @@
                             </div>
 
                             <div class="col-6 mb-3">
-                                <label asp-for="Price" class="mb-1"> <b>Price Range</b></label>
+                                <label asp-for="Price" class="mb-1"> <b>Price Range -2000 to +2000 </b></label>
                                 <input asp-for="Price" type="number" class="form-control" />
                             </div>
 
                             <div class="col-6 mb-3">
                                 <label asp-for="Room" class="mb-1"> <b>Number of Rooms </b></label>
                                 <select asp-for="Room" class="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
                                 </select>
                             </div>
                             <div class="col-6 mb-3">
                                 <label asp-for="Type" class="mb-1"><b>Type of Flat </b></label>
                                 <select asp-for="Type" class="form-control">
-                                    <option>Family</option>
-                                    <option>Bachelor</option>
-                                    <option>Sublate</option>
+                                    <option value="Family">Family</option>
+                                    <option value="Bachelor">Bachelor</option>
+                                    <option value="Sublate">Sublate</option>
 
                                 </select>
                             </div>
@@ -108,7 +108,7 @@
 
 
                         </div>
-                        <button class="btn btn-success mt-3 mb-3">Search Now</button>
+                        <button class="btn btn-success mt-3 mb-3" >Search Now</button>
                     </form>
                 </div>
             </div>
@@ -151,6 +151,7 @@
                     <img class="card-img-top" style="overflow: hidden" src="@item.Picture" alt="Card image cap">
                     <div class="card-body">
                        <div>
+                            <small class="dec_flat"><b>Flat Name:</b> @item.Name</small> <br />
                             <small class="dec_flat"><b>Address:</b> H: @item.HouseNo, R: @item.RoadNo, Sc: @item.sectorNo, @item.AreaName </small> <br />
                             <small class="dec_flat "><b> Price:</b> @item.TotalCost tk/month </small>
                             <small class="dec_flat mx-3"><b>  Type:</b>@item.Types</small> <br />
@@ -170,12 +171,27 @@
     <div class="RecomendedArea">
         <div class="card" style="background: #e1e1e1;">
             <div class="card-body">
+               
+    @if (TempData["subscribe"] != null)
+    {
+            <script type="text/javascript" >
+                window.onload = function () {
+                    Swal.fire(
+                        '',
+                       '@TempData["subscribe"]',
+                       ''
+                    )
+                };
+             </script>
+    }
+   
+       
                   <form asp-controller="home" asp-action="suscriber" method="post">
                       <div class="row">
                         <div class="col-4"></div>
                         <div class="col-4 mb-3">
                             <label for="email" class="mb-1"> <b>Subscribe with your Email</b></label>
-                            <input for="email" name="email" type="email" class="form-control" />
+                            <input for="email" name="email" type="email" class="form-control" autocomplete="off" />
                            
                         </div>
                         <div class="col-2 mt-4">
@@ -188,3 +204,6 @@
       
     </div>
 </div>
+
+
+   

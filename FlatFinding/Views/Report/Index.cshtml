@@ -29,7 +29,7 @@
                 <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="3" target="_blank">
                     <div class="card bg-c-pink order-card">
                         <div class="card-block" style="padding: 10px;">
-                            <h5 class="text-center">Last Month</h5>
+                            <h5 class="text-center">This Month</h5>
                         </div>
                     </div>
                 </a>
@@ -54,7 +54,7 @@
 
             </div>
 
-            <div class="col-md-4 col-xl-3">
+           @* <div class="col-md-4 col-xl-3">
                 <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="Index" asp-route-id="3" >
                     <div class="card bg-c-blue order-card">
                         <div class="card-block" style="padding: 10px;">
@@ -63,10 +63,10 @@
                     </div>
                 </a>
 
-            </div>
+            </div>*@
            
             <div class="col-md-4 col-xl-3">
-                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="4" >
+                <a style="width: 150px; text-decoration: none" asp-controller="Report" asp-action="AllBookingReport" asp-route-id="4" target="_blank">
                     <div class="card bg-c-yellow order-card">
                         <div class="card-block" style="padding: 10px;">
                             <h5 class="text-center">Generate All Booking</h5>

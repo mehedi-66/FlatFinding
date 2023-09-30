@@ -1,0 +1,126 @@
+﻿@model FlatFinding.Models.FlatBooked
+
+<div class="RecomendedArea mt-2 mb-3">
+    @*<h>Choose your Payment Method</h>*@
+
+    <div class="card  mb-3 mt-3">
+        <div class="card-header">
+            <h6 class="card-title">Police Veryfication Form and Condition Policy</h6>       
+        </div>
+        <div class="card-body">
+          @*  <h6>Paid Amount: @ViewBag.Cost</h6>*@
+            <form asp-controller="Payment" asp-action="PaymentGetWay" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="row">
+                  
+                    <input hidden asp-for="FlatId" value="@ViewBag.Id" />
+                    <div class="col-6 mb-3">
+                        <label asp-for="PictureOfPerson">Upload Picture of You</label>
+                        <input type="file" name="file" class="form-control" />
+                        <span asp-validation-for="PictureOfPerson" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="NameOfWhoLive">Name Of Who want to Live</label>
+                        <input asp-for="NameOfWhoLive" type="text" class="form-control" />
+                        <span asp-validation-for="NameOfWhoLive" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="FatherName">Father Name</label>
+                        <input asp-for="FatherName" type="text" class="form-control" />
+                        <span asp-validation-for="FatherName" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="DateOfBirth">Date Of Birth</label>
+                        <input asp-for="DateOfBirth" type="date" class="form-control" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="ParmanetAddress">Parmanent Address</label>
+                        <input asp-for="ParmanetAddress" type="text" class="form-control" />
+                        <span asp-validation-for="ParmanetAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="MaritalStatus">Married Status</label>
+                        <select asp-for="MaritalStatus" class="form-control">
+                            <option value="married">married</option>
+                            <option value="Unmarried">Unmarried</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="EmploymentAddress">Employement Name , Address</label>
+                        <input asp-for="EmploymentAddress" type="text" class="form-control" />
+                        <span asp-validation-for="EmploymentAddress" class="text-danger"></span>
+                    </div>  
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="Religion"></label>
+                        <input asp-for="Religion" type="text" class="form-control" />
+                        <span asp-validation-for="Religion" class="text-danger"></span>
+                    </div>  
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="PhoneNumberOfWhoTakeFlat">Phone Number</label>
+                        <input asp-for="PhoneNumberOfWhoTakeFlat" type="text" class="form-control" />
+                        <span asp-validation-for="PhoneNumberOfWhoTakeFlat" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="EmailId">Email</label>
+                        <input asp-for="EmailId" type="text" class="form-control" />
+                        <span asp-validation-for="EmailId" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="NID">NID Number</label>
+                        <input asp-for="NID" type="text" class="form-control" />
+                        <span asp-validation-for="NID" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="Person1Name">Person 1 Name, Relation</label>
+                        <input asp-for="Person1Name" type="text" class="form-control" placeholder="Rahim, my son" />
+                        <span asp-validation-for="Person1Name" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="Person1Phone">Peron 1 Phone Number</label>
+                        <input asp-for="Person1Phone" type="text" class="form-control" />
+                        <span asp-validation-for="Person1Phone" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="Person2Name">Person 2 Name, Relation</label>
+                        <input asp-for="Person2Name" type="text" class="form-control" />
+                        <span asp-validation-for="Person2Name" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="Person2Phone">Peron 2 Phone Number</label>
+                        <input asp-for="Person2Phone" type="text" class="form-control" />
+                        <span asp-validation-for="Person2Phone" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="NameOfBeforeHouseHolderName">Before House Holder Name</label>
+                        <input asp-for="NameOfBeforeHouseHolderName" type="text" class="form-control" />
+                        <span asp-validation-for="NameOfBeforeHouseHolderName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="AddressOfBeforeHouse">Before House Address</label>
+                        <input asp-for="AddressOfBeforeHouse" type="text" class="form-control" />
+                        <span asp-validation-for="AddressOfBeforeHouse" class="text-danger"></span>
+                    </div> 
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="ResoneOfLeveingHouse">Before Leave Reason</label>
+                        <input asp-for="ResoneOfLeveingHouse" type="text" class="form-control" />
+                        <span asp-validation-for="ResoneOfLeveingHouse" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6 mb-3">
+                        <label asp-for="Condition">How Many Month do you want To Rent This House??</label>
+                        <input asp-for="Condition" type="Number" class="form-control" />
+                        <span asp-validation-for="Condition" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3" asp-controller="Payment" asp-action="Index">Submit</button>
+                </div>
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+</div>

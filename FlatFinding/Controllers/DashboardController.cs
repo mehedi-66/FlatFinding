@@ -11,42 +11,207 @@ using MimeKit;
 using Org.BouncyCastle.Asn1.Ocsp;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using MailKit.Net.Smtp;
+using DinkToPdf;
+using FlatFinding.ReportTemplate;
+using DinkToPdf.Contracts;
+using Org.BouncyCastle.Asn1.X509;
+using System.Drawing;
 
 namespace FlatFinding.Controllers
 {
     public class DashboardController : Controller
     {
+        private IConverter _converter;
         private readonly FlatFindingContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public DashboardController(FlatFindingContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,
+        public DashboardController(IConverter converter, FlatFindingContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager,
                                     SignInManager<ApplicationUser> signInManager, IWebHostEnvironment webHostEnvironment)
         {
+            _converter = converter;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
+
+
+        public IActionResult FlatBookingCancel(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    var flatBooked = _context.FlatBookeds.FirstOrDefault(f => f.FlatBookedId == id);
+                    if (flatBooked != null)
+                    {
+                        var flat = _context.Flats.AsNoTracking().FirstOrDefault(f => f.FlatId == flatBooked.FlatId);
+                        if (flat != null)
+                        {
+                            flat.FlatId = 0;
+                            flat.IsBooking = 0;
+                            _context.Flats.Add(flat);
+                            _context.SaveChanges();
+
+                            flatBooked.IsDelete = 1;
+                            flatBooked.BookingCancel = DateTime.Now;
+                            _context.FlatBookeds.Update(flatBooked);
+                            _context.SaveChanges();
+
+                           
+                        }
+                    }
+                   
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            catch {
+                return View("Error");
+            }
+
+          
+        }
+
+        public async Task<IActionResult> FlatSearchForAdmin(string Area = "", string Type = "", string FlatStatus = "")
+        {
+            // Admin Search page open 
+            try
+            {
+                List<Flat> flats = new List<Flat>();
+
+               
+               // All   All   All
+               // Area Fix start 
+               if(Area == "All" && Type ==  "All" && FlatStatus != "All")
+               {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.FlatStatus == FlatStatus).ToListAsync();
+
+                }
+               else if(Area == "All" && Type != "All" && FlatStatus == "All")
+               {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Types == Type).ToListAsync();
+                }
+               else if(Area == "All" && Type != "All" && FlatStatus != "All")
+               {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Types == Type && f.FlatStatus == FlatStatus).ToListAsync();
+               }
+                // Area fix end
+                // Type Fix start 
+                if (Area != "All" && Type == "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area).ToListAsync();
+
+                }
+                else if (Area == "All" && Type == "All" && FlatStatus != "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.FlatStatus == FlatStatus).ToListAsync();
+                }
+                else if (Area != "All" && Type == "All" && FlatStatus != "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area && f.FlatStatus == FlatStatus).ToListAsync();
+                }
+                // Type fix end
+                // Status Fix start 
+                if (Area != "All" && Type == "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area).ToListAsync();
+
+                }
+                else if (Area == "All" && Type != "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Types == Type).ToListAsync();
+                }
+                else if (Area != "All" && Type != "All" && FlatStatus == "All")
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0 && f.AreaName == Area && f.Types == Type).ToListAsync();
+                }
+                // Status fix end
+
+
+
+                if ((Area == "" || Area == "All") && (Type == "" || Type == "All") && (FlatStatus == "" || FlatStatus == "All"))
+                {
+                    flats = await _context.Flats.Where(f => f.IsBooking == 0).ToListAsync();
+                }
+               
+                
+                ViewBag.Flats = flats;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        private int UpdateStatusofFlat(string status, int id)
+        {
+            var flat = _context.Flats.FirstOrDefault(f => f.FlatId == id);
+            if (flat != null)
+            {   
+                flat.FlatStatus = status;
+                _context.Flats.Update(flat);
+                _context.SaveChanges();
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        [HttpGet]
+        public IActionResult AdminUpdateFlatStatusAccepted(int id)
+        {
+            // Accepted 
+            UpdateStatusofFlat("Accepted", id);
+            // success 1 and fail 0
+            return RedirectToAction("FlatSearchForAdmin");
+        }  
+        public IActionResult AdminUpdateFlatStatusPending(int id)
+        {
+            // Pending
+            UpdateStatusofFlat("Pending", id);
+            return RedirectToAction("FlatSearchForAdmin");
+        } 
+        public IActionResult AdminUpdateFlatStatusRejected(int id)
+        {
+            // Rejected 
+            UpdateStatusofFlat("Rejected", id);
+            return RedirectToAction("FlatSearchForAdmin");
+        }
+        public IActionResult AdminUpdateFlatStatusDelete(int id)
+        {
+            // Delete 
+            var flat = (_context.Flats.FirstOrDefault(f=>f.FlatId == id));
+            if(flat != null)
+            {
+                _context.Flats.Remove(flat);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("FlatSearchForAdmin");
+        }
         public async Task<IActionResult> UserProfile()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var user =await _userManager.FindByIdAsync(userId);
 
-            List< BookingListViewModel> BookedFlat = (
+            List<BookingListViewModel> BookedFlat = (
                             from flatBooked in _context.FlatBookeds
                             join flat in _context.Flats on flatBooked.FlatId equals flat.FlatId
-                            where flatBooked.UserId == userId
+                            where flatBooked.UserId == userId && flatBooked.IsDelete == 0
                             select new BookingListViewModel
                             {
+                                FlatBookedId = flatBooked.FlatBookedId,
                                 Picture = flat.Picture,
                                 Address = $"H: {flat.HouseNo} R: {flat.RoadNo} S {flat.sectorNo}, {flat.AreaName}",
                                 Cost = flat.TotalCost,
                                 Room = int.Parse(flat.RoadNo),
                                 Type = flat.Types,
-                                Date = flatBooked.BookingDate
+                                Date = flatBooked.BookingDate,
+                              
                             }
                         ).ToList();
 
@@ -59,7 +224,8 @@ namespace FlatFinding.Controllers
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var user = await _userManager.FindByIdAsync(userId);
-            var flats = _context.Flats.Where(f => f.IsBooking == 0).ToList();
+            var flatsByOwner = _context.Flats.Where(f => f.IsBooking == 0 && f.OwnerId == userId).ToList();
+            var flats = _context.Flats.ToList();
 
             /* List<BookingListViewModel> BookedFlat = (
                              from flatBooked in _context.FlatBookeds
@@ -79,7 +245,7 @@ namespace FlatFinding.Controllers
             var BookedFlats = (
                  from flatBooked in _context.FlatBookeds
                  join flat in _context.Flats on flatBooked.FlatId equals flat.FlatId
-                 where flatBooked.OwnerId == userId
+                 where flatBooked.OwnerId == userId && flatBooked.IsDelete == 0
                  select new
                  {
                      Flat = flat,
@@ -93,17 +259,19 @@ namespace FlatFinding.Controllers
                 var user12 = await _userManager.FindByIdAsync(item.FlatBooked.UserId);
                 BookedFlat.Add( new BookingListViewModel
                 {
+                    FlatBookedId = item.FlatBooked.FlatBookedId,
                     Picture = item.Flat.Picture,
                     UserName = user12.Name,
                     Address = user12.Address,
                     Type = user12.PhoneNumber,
                     Cost = item.Flat.TotalCost,
-                    Date = item.FlatBooked.BookingDate
+                    Date = item.FlatBooked.BookingDate,
+                   
                 });
                 // Now you can use the bookingViewModel or add it to a list if needed
             }
 
-            ViewBag.Flats = flats;
+            ViewBag.Flats = flatsByOwner;
             ViewBag.Booked = BookedFlat;
             ViewBag.user = user;
             return View();
@@ -158,17 +326,10 @@ namespace FlatFinding.Controllers
 
             return RedirectToAction("AdminDashboard");
         }
-        [HttpGet]
-        public IActionResult AdminSearchFlat()
-        {
-            return View();
-        }
 
-        [HttpGet]
-        public IActionResult AdminSearchResult()
-        {
-            return View();
-        }
+       
+
+       
 
         [HttpGet]
         public async Task<IActionResult> Notice()
@@ -270,6 +431,77 @@ namespace FlatFinding.Controllers
             var enqueries = _context.Enqueries.ToList();
             ViewBag.Enquery = enqueries;
             return View();
+        }
+
+        public IActionResult BookingReport(int id)
+        {
+            string Header = "";
+            var bookedList = _context.FlatBookeds.Where(b => b.FlatBookedId == id).ToList();
+            var flatList = _context.Flats.ToList();
+            var userList = _userManager.Users;
+            JoinedFlatBookingData joinedData = new JoinedFlatBookingData();
+
+            var query = from booking in bookedList
+                        join flat in flatList on booking.FlatId equals flat.FlatId
+                        join user in userList on booking.OwnerId equals user.Id
+                        join user1 in userList on booking.UserId equals user1.Id
+                        select new JoinedFlatBookingData
+                        {
+                            FlatName = flat.Name,
+                            Address = $"H: {flat.HouseNo} R: {flat.RoadNo} S: {flat.sectorNo}, {flat.AreaName}",
+                            Type = flat.Types.ToString(),
+                            OwnerName = user.Name,
+                            OwnerPhone = user.PhoneNumber,
+                            BuyerName = user1.Name,
+                            BuyerPhone = user1.PhoneNumber,
+                            BookingDate = booking.BookingDate,
+                            FlatCost = booking.FlatCost,
+                            NameOfWhoLive = booking.NameOfWhoLive,
+                            FatherName = booking.FatherName,
+                            DateOfBirth = booking.DateOfBirth,
+                            ParmanetAddress = booking.ParmanetAddress,
+                            MaritalStatus = booking.MaritalStatus,
+                            Religion = booking.Religion,
+                            EmailId = booking.EmailId,
+                            NID = booking.NID,
+                            Person1Name = booking.Person1Name,
+                            Person1Phone = booking.Person1Phone,
+                            Person2Name = booking.Person2Name,
+                            Person2Phone = booking.Person2Phone,
+                            ResoneOfLeveingHouse = booking.ResoneOfLeveingHouse,
+                            Condition = booking.Condition
+                        };
+            joinedData = query.FirstOrDefault();
+            return File(GetPDFFileForInvoice(joinedData, Header), "application/pdf");
+        }
+
+        public byte[] GetPDFFileForInvoice(JoinedFlatBookingData joinedData, string Header)
+        {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+            var globalSettings = new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings { Top = 10 },
+                DocumentTitle = "PDF Report"
+            };
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = InvoiceHtmlTemplate.GetHtml(joinedData, Header),
+                WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(wwwRootPath, "css", "invoice.css") },
+                HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Flat Finding" }
+            };
+            var pdf = new HtmlToPdfDocument()
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+            byte[] file = _converter.Convert(pdf);
+            return file;
         }
     }
 }

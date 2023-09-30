@@ -30,14 +30,14 @@ namespace FlatFinding.Controllers
 
             var userRole = await _roleManager.FindByNameAsync("User");
             var ownerRole = await _roleManager.FindByNameAsync("Owner");
-            var AllFlats = await _context.Flats.ToListAsync();
+            var AllFlats = await _context.Flats.Where(f => f.IsBooking == 0 && f.Available == "YES" && f.FlatStatus == "Accepted").ToListAsync();
             
             var Flats = AllFlats
-                        .Where(f => f.IsBooking == 0 && f.Available == "YES")
+                        .Where(f => f.IsBooking == 0 && f.Available == "YES" && f.FlatStatus == "Accepted")
                         .OrderByDescending(f => f.Views) 
                         .Take(10)
                         .ToList();
-            var AreaWise = AllFlats.Where(f => f.IsBooking == 0 && f.Available == "YES")
+            var AreaWise = AllFlats.Where(f => f.IsBooking == 0 && f.Available == "YES" && f.FlatStatus == "Accepted")
                             .GroupBy(flat => flat.AreaName)
                             .Select(group => new
                             {
@@ -75,15 +75,22 @@ namespace FlatFinding.Controllers
         {
             if (!string.IsNullOrEmpty(email))
             {
-                Suscriber sub = new Suscriber()
+                var isEmail = _context.Suscribers.AsNoTracking().FirstOrDefault( f => f.email == email);
+                if(isEmail == null)
                 {
-                    email = email
-                };
-                _context.Suscribers.Add(sub);
-                await _context.SaveChangesAsync();
+                    Suscriber sub = new Suscriber()
+                    {
+                        email = email
+                    };
+                    _context.Suscribers.Add(sub);
+                    await _context.SaveChangesAsync();
+                    TempData["subscribe"] = "Email Successfully Save";
+                    return RedirectToAction("Index");
+                }
+                
             }
 
-
+            TempData["subscribe"] = "Email Not Save";
             return RedirectToAction("Index");
         }
 

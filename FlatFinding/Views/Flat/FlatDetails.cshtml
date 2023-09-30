@@ -4,12 +4,28 @@
     var flatInfo = ViewBag.FlatDetail;
 }
 <div class="RecomendedArea mt-5 mb-3">
+    @if (TempData["flat"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                Swal.fire(
+                    '',
+                    '@TempData["flat"]',
+                    ''
+                )
+            };
+        </script>
+    }
     <h5>Confirm Your Flat</h5>
     <small>Best Flat with affordable price</small>
     <div class="card flatDetils mb-3 mt-3">
 
         <img class="card-img-top" style="overflow: hidden" src="@flatInfo.Picture" alt="Card image cap">
                <div class="card-body mb-3">
+            <p>
+                <b> Name of Flat: </b> <br />
+                @flatInfo.Name
+            </p>
                    <p><b> Description: </b> <br/>
                 @flatInfo.Description
                    </p>
@@ -31,7 +47,7 @@
                </div>
             <div class="d-flex justify-content-end mb-3 mt-2">
             <a class="btn btn-primary" asp-controller="Flat" asp-action="Index" >Cancel</a>
-            <a class="btn btn-primary mx-3" asp-controller="Payment" asp-action="Index" asp-route-id="@flatInfo.FlatId">Payment</a>
+            <a class="btn btn-primary mx-3" asp-controller="Payment" asp-action="PoliceVerify" asp-route-id="@flatInfo.FlatId">Confirm</a>
             </div>
           
         <div class="row w-75 mx-3">
@@ -49,15 +65,15 @@
 
             <div>
                 <h5>See All Comments</h5>
-                <div class="row w-50">
+                <div class="row w-100">
                     @foreach(var item in ViewBag.Comments)
                     {
-                         <div class="col-6 mb-3">
-                        <p>Name: @item.Name </p>
-                        <p><small>Date: @item.Date</small></p>
-                        <p>@item.comment</p>
+                         <div class="col-12 mb-3">
+                            <p><b>@item.Name </b> <br/><small>@item.Date</small><br/>
+
+                                @item.comment</p>
                         </div>
-                        <div class="col-6"></div>
+                        @*<div class="col-6"></div>*@
                     }
                    
                 </div>

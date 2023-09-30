@@ -4,7 +4,18 @@
     ViewData["Title"] = "Create Flat";
 
 }
-
+@if (TempData["flat"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            Swal.fire(
+                '',
+                '@TempData["flat"]',
+                ''
+            )
+        };
+    </script>
+}
 <div class="RecomendedArea mt-5 mb-3">
    
 
@@ -13,8 +24,11 @@
         <div class="card-body">
             <h5>Flat Info</h5>
 
-            <form asp-controller="Flat" asp-action="Update" class="p-2" method="post" enctype="multipart/form-data">
-
+            <form asp-controller="Flat" asp-action="Create" class="p-2" method="post" enctype="multipart/form-data">
+                @if (ViewBag.SameFlat == "Same")
+                {
+                    <div><p class="text-danger">Same flat Available</p></div>
+                }
                 <div class="row  mt-3">
                     <div class="col-6 mb-3">
                         <label asp-for="Name">Flat Name</label>
@@ -25,6 +39,11 @@
                         <label asp-for="HouseNo">House No</label>
                         <input asp-for="HouseNo" type="number" class="form-control" />
                         <span asp-validation-for="HouseNo" class="text-danger"></span>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label asp-for="FlatNumber">Flat Number</label>
+                        <input asp-for="FlatNumber" type="number" class="form-control" />
+                        <span asp-validation-for="FlatNumber" class="text-danger"></span>
                     </div>
                      <div class="col-6 mb-3">
                         <label asp-for="RoadNo">Road No</label>
@@ -52,7 +71,7 @@
 
                     <div class="col-6 mb-3">
                         <label asp-for ="TotalCost"> Total Cost per month</label>
-                        <input asp-for="TotalCost" type="text" class="form-control" />
+                        <input asp-for="TotalCost" type="number" class="form-control" />
                         <span asp-validation-for="TotalCost" class="text-danger"></span>
                     </div>
                     <div class="col-6 mb-3">
@@ -72,7 +91,7 @@
                         <label asp-for="Types">Types</label>
                         <select asp-for="Types" class="form-control">
                             <option value="Family">Family</option>
-                            <option value="Bacelor">Bacelor</option>
+                            <option value="Bacelor">Bachelor</option>
                             <option value="Sublate">Sublate</option>
                         </select>
                         <span asp-validation-for="Types" class="text-danger"></span>

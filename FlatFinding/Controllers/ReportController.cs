@@ -17,12 +17,14 @@ namespace FlatFinding.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly FlatFindingContext _context;
-        public ReportController(UserManager<ApplicationUser> userManager, FlatFindingContext context, IConverter converter, IWebHostEnvironment webHostEnvironment)
+       
+        public ReportController( UserManager<ApplicationUser> userManager, FlatFindingContext context, IConverter converter, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _converter = converter;
             _webHostEnvironment = webHostEnvironment;
             _context = context;
+           
         }
         public IActionResult Index(int id = 0)
         {
@@ -98,6 +100,7 @@ namespace FlatFinding.Controllers
                             OwnerName = user.Name,
                             BuyerName = user1.Name,
                             BookingDate = booking.BookingDate,
+                            BookingCancel = booking.BookingCancel,
                             FlatCost = booking.FlatCost,
                             FlatProfit = booking.FlatProfit
                         };
@@ -132,7 +135,7 @@ namespace FlatFinding.Controllers
             }
             else if(id == 3)
             { // Last month 
-                Header = "Last Month";
+                Header = "This Month";
                 DateTime today = DateTime.Today;
                 DateTime firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
                 DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
@@ -151,6 +154,7 @@ namespace FlatFinding.Controllers
                             OwnerName = user.Name,
                             BuyerName = user1.Name,
                             BookingDate = booking.BookingDate,
+                            BookingCancel = booking.BookingCancel,
                             FlatCost = booking.FlatCost,
                             FlatProfit = booking.FlatProfit
                         };
@@ -170,7 +174,7 @@ namespace FlatFinding.Controllers
             var globalSettings = new GlobalSettings
             {
                 ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
+                Orientation = Orientation.Landscape,
                 PaperSize = PaperKind.A4,
                 Margins = new MarginSettings { Top = 10 },
                 DocumentTitle = "PDF Report"
@@ -191,5 +195,7 @@ namespace FlatFinding.Controllers
             byte[] file = _converter.Convert(pdf);
             return file;
         }
+
+        
     }
 }

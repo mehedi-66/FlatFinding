@@ -6,7 +6,7 @@ namespace FlatFinding.Models
     {
         public int FlatId { get; set; }
 
-      
+
         public string? OwnerId { get; set; }
         [Required]
         public string Name { get; set; }
@@ -17,15 +17,15 @@ namespace FlatFinding.Models
         [Required]
         public string sectorNo { get; set; }
         [Required]
-        public string AreaName  { get; set; }
+        public string AreaName { get; set; }
         [Required]
         public int TotalCost { get; set; }
         [Required]
-        public  int RoomNo { get; set; }
+        public int RoomNo { get; set; }
         [Required]
         public string Available { get; set; }
         [Required]
-        public string Types  { get; set; }
+        public string Types { get; set; }
         public string? Picture { get; set; }
         [Required]
         public string Description { get; set; }
@@ -35,6 +35,10 @@ namespace FlatFinding.Models
         public int Views { get; set; }
 
         public int IsBooking { get; set; }
+
+        [Required]
+        public int? FlatNumber {get; set;}
+        public string? FlatStatus { get; set; }
 
     }
 }

@@ -1,0 +1,59 @@
+﻿@model FlatFinding.ViewModel.UpdateUserViewModel
+
+@{
+    ViewBag.Title = "User Update";
+}
+
+
+
+<div class="card row w-50 p-3 m-auto">
+    <h4>Account Update</h4>
+    <div class="col-md-12">
+        <form asp-controller="Account" asp-action="EditUser" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+           <input hidden value="id" />
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end">
+                    <img class="mx-4" src="@ViewBag.Picture" style="width: 100px; height: 100px" />
+                </div>
+                <div class="form-group col-6 mb-2">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 mb-2">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 mb-2">
+                    <label asp-for="FatherName"></label>
+                    <input asp-for="FatherName" class="form-control" />
+                    <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 mb-2">
+                    <label asp-for="MotherName"></label>
+                    <input asp-for="MotherName" class="form-control" />
+                    <span asp-validation-for="MotherName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 mb-2">
+                    <label asp-for="Address"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+               @* <div class="form-group col-6 mb-2">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>*@
+                <div class="form-group col-6 mb-2">
+                    <label asp-for="Picture"></label>
+                    <input type="file" name="file" class="form-control" />
+                    <span asp-validation-for="Picture" class="text-danger"></span>
+                </div>
+            </div>
+          
+            <button type="submit" class="btn btn-primary mt-3">Update</button>
+        </form>
+    </div>
+</div>
